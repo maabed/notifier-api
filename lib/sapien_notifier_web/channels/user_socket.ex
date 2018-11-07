@@ -1,12 +1,8 @@
-defmodule SapienNotificationWeb.UserSocket do
+defmodule SapienNotifierWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", SapienNotificationWeb.RoomChannel
-
-  ## Transports
-  transport(:websocket, Phoenix.Transports.WebSocket)
-  # transport :longpoll, Phoenix.Transports.LongPoll
+  # channel "room:*", SapienNotifierWeb.RoomChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -19,7 +15,7 @@ defmodule SapienNotificationWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
+  def connect(_params, socket, _connect_info) do
     {:ok, socket}
   end
 
@@ -30,7 +26,7 @@ defmodule SapienNotificationWeb.UserSocket do
   # Would allow you to broadcast a "disconnect" event and terminate
   # all active sockets and channels for a given user:
   #
-  #     SapienNotificationWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
+  #     SapienNotifierWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil

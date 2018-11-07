@@ -1,12 +1,12 @@
-defmodule SapienNotificationWeb do
+defmodule SapienNotifierWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use SapienNotificationWeb, :controller
-      use SapienNotificationWeb, :view
+      use SapienNotifierWeb, :controller
+      use SapienNotifierWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,25 +19,26 @@ defmodule SapienNotificationWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: SapienNotificationWeb
+      use Phoenix.Controller, namespace: SapienNotifierWeb
+
       import Plug.Conn
-      import SapienNotificationWeb.Router.Helpers
-      import SapienNotificationWeb.Gettext
+      import SapienNotifierWeb.Gettext
+      alias SapienNotifierWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/sapien_notification_web/templates",
-        namespace: SapienNotificationWeb
+        root: "lib/sapien_notifier_web/templates",
+        namespace: SapienNotifierWeb
 
       # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
+      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
 
-      import SapienNotificationWeb.Router.Helpers
-      import SapienNotificationWeb.ErrorHelpers
-      import SapienNotificationWeb.Gettext
+      import SapienNotifierWeb.ErrorHelpers
+      import SapienNotifierWeb.Gettext
+      alias SapienNotifierWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -52,7 +53,7 @@ defmodule SapienNotificationWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import SapienNotificationWeb.Gettext
+      import SapienNotifierWeb.Gettext
     end
   end
 

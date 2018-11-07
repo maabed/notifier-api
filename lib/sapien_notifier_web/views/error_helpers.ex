@@ -1,4 +1,4 @@
-defmodule SapienNotificationWeb.ErrorHelpers do
+defmodule SapienNotifierWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -11,10 +11,10 @@ defmodule SapienNotificationWeb.ErrorHelpers do
     # to translate as a static argument:
     #
     #     # Translate "is invalid" in the "errors" domain
-    #     dgettext "errors", "is invalid"
+    #     dgettext("errors", "is invalid")
     #
     #     # Translate the number of files with plural rules
-    #     dngettext "errors", "1 file", "%{count} files", count
+    #     dngettext("errors", "1 file", "%{count} files", count)
     #
     # Because the error messages we show in our forms and APIs
     # are defined inside Ecto, we need to translate them dynamically.
@@ -25,9 +25,9 @@ defmodule SapienNotificationWeb.ErrorHelpers do
     # should be written to the errors.po file. The :count option is
     # set by Ecto and indicates we should also apply plural rules.
     if count = opts[:count] do
-      Gettext.dngettext(SapienNotificationWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(SapienNotifierWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(SapienNotificationWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(SapienNotifierWeb.Gettext, "errors", msg, opts)
     end
   end
 end

@@ -1,5 +1,5 @@
-defmodule SapienNotificationWeb.ErrorView do
-  use SapienNotificationWeb, :view
+defmodule SapienNotifierWeb.ErrorView do
+  use SapienNotifierWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

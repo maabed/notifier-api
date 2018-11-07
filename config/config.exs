@@ -3,23 +3,27 @@
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
-use Mix.Config
 
 # General application configuration
-config :sapien_notification,
-  ecto_repos: [SapienNotification.Repo]
+use Mix.Config
+
+config :sapien_notifier,
+  ecto_repos: [SapienNotifier.Repo]
 
 # Configures the endpoint
-config :sapien_notification, SapienNotificationWeb.Endpoint,
+config :sapien_notifier, SapienNotifierWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "HrD+f46yUzXNnBN0NlLbzIv0vyg9vvI6LU8ihUOauQONpB+aHWCYzFrs4JTuuG2j",
-  render_errors: [view: SapienNotificationWeb.ErrorView, accepts: ~w(json)],
-  pubsub: [name: SapienNotification.PubSub, adapter: Phoenix.PubSub.PG2]
+  secret_key_base: "qmJil2X0yjWLCQ4n2uJwj+tpsOgioCtNWTSUlUYoS0DI72yp+JTLgClV+LI0QBSo",
+  render_errors: [view: SapienNotifierWeb.ErrorView, accepts: ~w(json)],
+  pubsub: [name: SapienNotifier.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
-  metadata: [:user_id]
+  metadata: [:request_id]
+
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
