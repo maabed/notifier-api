@@ -11,7 +11,7 @@ defmodule SapienNotification.Application do
       # Start the Ecto repository
       supervisor(SapienNotification.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(SapienNotificationWeb.Endpoint, []),
+      supervisor(SapienNotificationWeb.Endpoint, [])
       # Start your own worker by calling: SapienNotification.Worker.start_link(arg1, arg2, arg3)
       # worker(SapienNotification.Worker, [arg1, arg2, arg3]),
     ]

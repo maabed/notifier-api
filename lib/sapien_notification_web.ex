@@ -28,8 +28,9 @@ defmodule SapienNotificationWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/sapien_notification_web/templates",
-                        namespace: SapienNotificationWeb
+      use Phoenix.View,
+        root: "lib/sapien_notification_web/templates",
+        namespace: SapienNotificationWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]

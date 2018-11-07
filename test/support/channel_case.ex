@@ -25,13 +25,13 @@ defmodule SapienNotificationWeb.ChannelCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(SapienNotification.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(SapienNotification.Repo, {:shared, self()})
     end
+
     :ok
   end
-
 end
