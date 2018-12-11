@@ -1,5 +1,6 @@
 defmodule SapienNotifierWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :sapien_notifier
+  use Absinthe.Phoenix.Endpoint
 
   socket "/socket", SapienNotifierWeb.UserSocket,
     websocket: true,

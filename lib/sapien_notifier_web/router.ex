@@ -5,7 +5,17 @@ defmodule SapienNotifierWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", SapienNotifierWeb do
+  scope "/api" do
     pipe_through :api
+
+    forward "/graphql", Absinthe.Plug,
+      schema: SapienNotifierWeb.Schema
+
+    if Mix.env() == :dev do
+      forward "/graphiql", Absinthe.Plug.GraphiQL,
+        schema: SapienNotifierWeb.Schema,
+        socket: SapienNotifierWeb.UserSocket,
+        interface: :playground
+    end
   end
 end

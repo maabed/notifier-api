@@ -1,5 +1,6 @@
 defmodule SapienNotifierWeb.UserSocket do
   use Phoenix.Socket
+  use Absinthe.Phoenix.Socket, schema: SapienNotifierWeb.Schema
 
   ## Channels
   # channel "room:*", SapienNotifierWeb.RoomChannel
