@@ -6,12 +6,14 @@ defmodule SapienNotifier.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
-      SapienNotifier.Repo,
+      supervisor(SapienNotifier.Repo, []),
       # Start the endpoint when the application starts
-      SapienNotifierWeb.Endpoint
+      supervisor(SapienNotifierWeb.Endpoint, []),
+      supervisor(Absinthe.Subscription, [SapienNotifierWeb.Endpoint])
       # Starts a worker by calling: SapienNotifier.Worker.start_link(arg)
       # {SapienNotifier.Worker, arg},
     ]

@@ -1,5 +1,6 @@
 defmodule SapienNotifierWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :sapien_notifier
+  use Absinthe.Phoenix.Endpoint
 
   socket "/socket", SapienNotifierWeb.UserSocket,
     websocket: true,
@@ -41,4 +42,18 @@ defmodule SapienNotifierWeb.Endpoint do
     signing_salt: "/83W7kX3"
 
   plug SapienNotifierWeb.Router
+
+  @doc """
+  Callback invoked for dynamically configuring the endpoint.
+
+  Check system environment vars at endpoint configuration
+  """
+  def init(_key, config) do
+    if config[:load_from_system_env] do
+      port = System.get_env("PORT") || raise "expected the PORT environment variable to be set"
+      {:ok, Keyword.put(config, :http, [:inet6, port: port])}
+    else
+      {:ok, config}
+    end
+  end
 end

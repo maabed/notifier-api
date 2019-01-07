@@ -1,33 +1,37 @@
 defmodule SapienNotifierWeb.UserSocket do
   use Phoenix.Socket
+  use Absinthe.Phoenix.Socket, schema: SapienNotifierWeb.Schema
+  require Logger
 
   ## Channels
-  # channel "room:*", SapienNotifierWeb.RoomChannel
+  channel "notification:*", SapienNotifierWeb.NotificationChannel
 
-  # Socket params are passed from the client and can
-  # be used to verify and authenticate a user. After
-  # verification, you can put default assigns into
-  # the socket that will be set for all channels, ie
-  #
-  #     {:ok, assign(socket, :user_id, verified_user_id)}
-  #
-  # To deny connection, return `:error`.
-  #
-  # See `Phoenix.Token` documentation for examples in
-  # performing token verification on connect.
-  def connect(_params, socket, _connect_info) do
+  def connect(params, socket) do
+    context = build_context(params)
+    socket = Absinthe.Phoenix.Socket.put_options(socket, context: context)
     {:ok, socket}
   end
 
-  # Socket id's are topics that allow you to identify all sockets for a given user:
-  #
-  #     def id(socket), do: "user_socket:#{socket.assigns.user_id}"
-  #
-  # Would allow you to broadcast a "disconnect" event and terminate
-  # all active sockets and channels for a given user:
-  #
-  #     SapienNotifierWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
-  #
-  # Returning `nil` makes this socket anonymous.
+  defp build_context(params) do
+    # Logger.info "build_context params: #{inspect params}"
+    with "Bearer " <> token <- Map.get(params, "wsAuth"),
+      {:ok, current_user} <- authorize(token) do
+        %{current_user: current_user}
+    else
+      nil ->
+        {:error, "Unauthorized"}
+      _ ->
+        %{}
+    end
+  end
+
+  defp authorize(token) do
+    case SapienNotifierWeb.Guardian.decode_and_verify(token, %{}, secret: {SapienNotifierWeb.Guardian, :fetch_secret, []}, allowed_algos: ["ES256"]) do
+      {:ok, claims} -> SapienNotifierWeb.Guardian.resource_from_claims(claims)
+      {:error, reason} -> {:error, reason}
+      nil -> {:error, "Unauthorized"}
+    end
+  end
+
   def id(_socket), do: nil
 end

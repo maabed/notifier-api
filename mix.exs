@@ -33,6 +33,9 @@ defmodule SapienNotifier.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe, "~> 1.4"},
+      {:absinthe_plug, "~> 1.4"},
+      {:absinthe_phoenix, "~> 1.4"},
       {:phoenix, "~> 1.4.0"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
@@ -40,7 +43,12 @@ defmodule SapienNotifier.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:absinthe_ecto, ">= 0.0.0"},
+      {:guardian, "~> 1.1.1", git: "https://github.com/ueberauth/guardian.git"},
+      {:poison, "~> 3.1"},
+      {:faker, "~> 0.11.2", only: [:dev, :test]},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 
