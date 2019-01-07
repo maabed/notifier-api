@@ -25,7 +25,7 @@ config :logger, :console,
 # Configures Guardian
 config :sapien_notifier, SapienNotifierWeb.Guardian,
   issuer: "sapien",
-  allowed_algos: ["ES256", "HS512"],
+  allowed_algos: ["ES256"],
   secret_key: "hvUNfqlSpsPsg1S8XElJMmXmYhCkelxox26OteggVzfEGk5LXdiv7QR9RPTyFSES"
 
   # Use Jason for JSON parsing in Phoenix

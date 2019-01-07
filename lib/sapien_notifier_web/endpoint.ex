@@ -3,7 +3,7 @@ defmodule SapienNotifierWeb.Endpoint do
   use Absinthe.Phoenix.Endpoint
 
   socket "/socket", SapienNotifierWeb.UserSocket,
-    websocket: true,
+    websocket: [timeout: 45_000],
     longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.

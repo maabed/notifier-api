@@ -1,13 +1,16 @@
 defmodule SapienNotifier.MixProject do
   use Mix.Project
 
+  @elixir_version "~> 1.7"
+
   def project do
     [
       app: :sapien_notifier,
       version: "0.1.0",
-      elixir: "~> 1.5",
+      elixir: @elixir_version,
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
