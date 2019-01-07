@@ -10,7 +10,6 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   end
 
   def user_notification(_, %{user_id: user_id}, _) do
-    Logger.info(inspect(user_id))
     {:ok, Notifier.get_user_notifications(user_id)}
   end
 

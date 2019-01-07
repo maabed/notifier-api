@@ -6,11 +6,11 @@ defmodule SapienNotifier.Notifier.Notification do
   import Ecto.Changeset
 
   schema "notifications" do
-    field :user_ids, {:array, :string}
+    field :user_id, :string
     field :action, :string
     field :payload, :map
     field :source, :string
-    field :target, :string
+    # field :target, {:array :string} # once mobile app ready
     # field :devices, {:array, :map} # once mobile app ready
 
     timestamps()
@@ -19,7 +19,7 @@ defmodule SapienNotifier.Notifier.Notification do
   @doc false
   def changeset(notification, attrs) do
     notification
-    |> cast(attrs, [:user_ids, :source, :action, :target, :payload])
-    |> validate_required([:user_ids, :source, :action, :target, :payload])
+    |> cast(attrs, [:user_id, :source, :action, :payload])
+    |> validate_required([:user_id, :source, :action, :payload])
   end
 end

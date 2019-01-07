@@ -22,7 +22,13 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Use Jason for JSON parsing in Phoenix
+# Configures Guardian
+config :sapien_notifier, SapienNotifierWeb.Guardian,
+  issuer: "sapien",
+  allowed_algos: ["ES256", "HS512"],
+  secret_key: "hvUNfqlSpsPsg1S8XElJMmXmYhCkelxox26OteggVzfEGk5LXdiv7QR9RPTyFSES"
+
+  # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
