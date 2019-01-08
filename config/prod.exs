@@ -9,7 +9,8 @@ config :sapien_notifier, SapienNotifierWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [host: System.get_env("HOST"), port: 443, scheme: "https"],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE")
+  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
+  check_origin: false
 
 # Do not print debug messages in production
 config :logger, level: :info
