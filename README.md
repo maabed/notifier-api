@@ -23,8 +23,15 @@ noification {
   id: string
   user_id: string
   source: string //  sapien platform, chat, wallet
-  action: string //  comment, post, reply, echo ... etc
-  payload [map] //  { title: '....', content: '.....', url: '....' } // notification context
+  data: {
+    sender: String // user name
+    senderId: String // user id
+    action: String // comment, post, reply, echo ... etc
+    actionId: String // commentId, postId, ... etc
+    title: '....',
+    content: '.....',
+    url: '....'
+  }
   inserted_at: date
   updated_at: date
 }

@@ -5,8 +5,7 @@ defmodule SapienNotifier.Repo.Migrations.CreateNotifications do
     create table(:notifications) do
       add :user_id, :string
       add :source, :string
-      add :action, :string
-      add :payload, :map
+      add :data, :map
       # add :target, {:array, :string}
       # add :devices, {:array, :map}
 
