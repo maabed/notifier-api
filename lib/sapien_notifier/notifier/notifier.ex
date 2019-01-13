@@ -28,6 +28,18 @@ defmodule SapienNotifier.Notifier do
     |> Repo.insert()
   end
 
+  def mark_as_read(id) do
+    case Repo.get!(Notification, id) do
+      %Notification{} = existing_notification ->
+        existing_notification
+        |> Ecto.Changeset.change(read: true)
+        |> Repo.update()
+        {:ok, true}
+      nil ->
+        {:error, :not_found}
+    end
+  end
+
   def update_notification(%Notification{} = notification, attrs) do
     notification
     |> Notification.changeset(attrs)

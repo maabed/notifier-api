@@ -20,20 +20,19 @@ GraphiQL playground at [`localhost:9000/api/graphiql`](http://localhost:9000/api
 
 ```
 noification {
-  id: string
-  user_id: string
-  source: string //  sapien platform, chat, wallet
+  id: id
+  user_id: string // receiver user id
+  sender_id: string // sender user id
+  sender_name: string // sender user name
+  source: string // sapien platform, wallet, chat
+  read: boolean // read flag
   data: {
-    sender: String // user name
-    senderId: String // user id
-    action: String // comment, post, reply, echo ... etc
-    actionId: String // commentId, postId, ... etc
-    title: '....',
-    content: '.....',
-    url: '....'
+    action: string // comment, post, reply, echo ... etc
+    action_id: string // commentId, postId, ... etc
+    title: string
+    content: string
+    url: string
   }
-  inserted_at: date
-  updated_at: date
 }
 ```
 

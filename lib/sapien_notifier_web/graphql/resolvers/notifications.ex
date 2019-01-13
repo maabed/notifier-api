@@ -13,6 +13,16 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
     {:ok, Notifier.get_user_notifications(user_id)}
   end
 
+  def notification(_, %{id: id}, _) do
+    {:ok, Notifier.get_notification!(id)}
+  end
+
+  def mark_as_read(_, %{id: id}, _) do
+    with {:ok, true} <- Notifier.mark_as_read(id) do
+      {:ok, true}
+    end
+  end
+
   def create_notification(_, args, _) do
     with {:ok, notification} <- Notifier.create_notification(args) do
       {:ok, notification}
