@@ -5,8 +5,18 @@ defmodule SapienNotifierWeb.Schema do
   use Absinthe.Schema
 
   alias SapienNotifierWeb.Resolvers
-
+  require Logger
   import_types SapienNotifierWeb.Type.Notifications
+
+  alias SapienNotifierWeb.Schema.Middleware
+
+  def middleware(middleware, _field, %{identifier: :mutation}) do
+    middleware ++ [Middleware.ChangesetErrors]
+  end
+
+  def middleware(middleware, _field, _object) do
+    middleware
+  end
 
   query do
     @desc "Get all notifications"
@@ -52,12 +62,14 @@ defmodule SapienNotifierWeb.Schema do
       arg :user_id, non_null(:id)
       trigger :create_notification,
         topic: fn args ->
+          Logger.info "notification_added SUBS on trigger: #{inspect args}"
           args.user_id
         end
 
       # replace _info with  %{context: %{ current_user: user_id }} to get current user
       # use {user_id}/create_notification on topic after activate notification channel
       config fn args, _info ->
+        Logger.info "notification_added SUBS on config: #{inspect args}"
         {:ok, topic: args.user_id}
       end
     end

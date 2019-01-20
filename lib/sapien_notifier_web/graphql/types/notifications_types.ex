@@ -13,28 +13,38 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :title, :string
     field :body, :string
     field :url, :string
+    field :vote_type, :string
   end
 
-  object :notification do
+  interface :notification_record do
     field :id, non_null(:id)
     field :user_id, non_null(:id)
     field :sender_id, :id
     field :sender_name, :string
     field :read, non_null(:boolean)
     field :source, :string
-    field :data, :data_map
     field :inserted_at, :naive_datetime
+    resolve_type fn _, _ -> nil end
   end
 
-  object :data_map do
-    field :action_id, :id, resolve: key("action_id")
-    field :action, :string, resolve: key("action")
-    field :title, :string, resolve: key("title")
-    field :body, :string, resolve: key("body")
-    field :url, :string, resolve: key("url")
+  object :notification do
+    interface :notification_record
+    field :id, non_null(:id)
+    field :user_id, non_null(:id)
+    field :sender_id, :id
+    field :sender_name, :string
+    field :read, non_null(:boolean)
+    field :source, :string
+    field :inserted_at, :naive_datetime
+    field :data, :data
   end
 
-  def key(k) do
-    fn m, _, _ -> {:ok, m[k]} end
+  object :data do
+    field :action_id, :string
+    field :action, :string
+    field :title, :string
+    field :body, :string
+    field :url, :string
+    field :vote_type, :string
   end
 end

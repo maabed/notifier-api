@@ -25,7 +25,16 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
 
   def create_notification(_, args, _) do
     with {:ok, notification} <- Notifier.create_notification(args) do
-      {:ok, notification}
+      {:ok,
+      %{id: notification.id,
+        user_id: notification.user_id,
+        source: notification.source,
+        sender_name: notification.sender_name,
+        sender_id: notification.sender_id,
+        read: notification.read,
+        inserted_at: notification.inserted_at,
+        data: notification.data }
+      }
     end
   end
 end
