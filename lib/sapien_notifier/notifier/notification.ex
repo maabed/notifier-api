@@ -26,7 +26,7 @@ defmodule SapienNotifier.Notifier.Notification do
     notification
     |> cast(attrs, [:user_ids, :sender_id, :sender_name, :source, :payload])
     |> validate_required([:user_ids, :sender_id, :sender_name, :source, :payload])
-    |> serialize_user_ids()
+    # |> serialize_user_ids()
   end
 
   defp serialize_user_ids(changeset) do

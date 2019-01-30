@@ -20,18 +20,18 @@ defmodule SapienNotifierWeb.Schema do
 
   query do
     @desc "Get all notifications"
-    field :all_notifications, list_of :notification do
+    field :all_notifications, list_of :query_notification do
       resolve &Resolvers.Notifications.all_notifications/3
     end
 
     @desc "Get user notification"
-    field :user_notification, list_of :notification do
+    field :user_notification, list_of :query_notification do
       arg :user_id, non_null(:id)
       resolve &Resolvers.Notifications.user_notification/3
     end
 
     @desc "Get notification by id"
-    field :notification, :notification do
+    field :notification, :query_notification do
       arg :id, non_null(:id)
       resolve &Resolvers.Notifications.notification/3
     end
