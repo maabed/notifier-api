@@ -3,6 +3,7 @@ defmodule SapienNotifierWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug SapienNotifierWeb.Context
   end
 
   scope "/api" do

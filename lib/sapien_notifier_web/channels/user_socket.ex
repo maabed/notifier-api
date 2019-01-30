@@ -1,7 +1,6 @@
 defmodule SapienNotifierWeb.UserSocket do
   use Phoenix.Socket
   use Absinthe.Phoenix.Socket, schema: SapienNotifierWeb.Schema
-  require Logger
 
   ## Channels
   channel "notification:*", SapienNotifierWeb.NotificationChannel
@@ -13,8 +12,7 @@ defmodule SapienNotifierWeb.UserSocket do
   end
 
   defp build_context(params) do
-    # Logger.info "build_context params: #{inspect params}"
-    with "Bearer " <> token <- Map.get(params, "wsAuth"),
+    with "Bearer " <> token <- Map.get(params, "authorization"),
       {:ok, current_user} <- authorize(token) do
         %{current_user: current_user}
     else

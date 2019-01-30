@@ -7,7 +7,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
   use Absinthe.Ecto, repo: SapienNotifier.Repo
   import_types Absinthe.Type.Custom
 
-  input_object :data_params do
+  input_object :payload_params do
     field :action_id, :string
     field :action, :string
     field :title, :string
@@ -18,7 +18,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
 
   interface :notification_record do
     field :id, non_null(:id)
-    field :user_id, non_null(:id)
+    field :user_ids, list_of(non_null(:string))
     field :sender_id, :id
     field :sender_name, :string
     field :read, non_null(:boolean)
@@ -30,16 +30,16 @@ defmodule SapienNotifierWeb.Type.Notifications do
   object :notification do
     interface :notification_record
     field :id, non_null(:id)
-    field :user_id, non_null(:id)
+    field :user_ids, list_of(non_null(:string))
     field :sender_id, :id
     field :sender_name, :string
     field :read, non_null(:boolean)
     field :source, :string
     field :inserted_at, :naive_datetime
-    field :data, :data
+    field :payload, :payload
   end
 
-  object :data do
+  object :payload do
     field :action_id, :string
     field :action, :string
     field :title, :string

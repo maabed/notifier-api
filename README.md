@@ -21,17 +21,18 @@ GraphiQL playground at [`localhost:9000/api/graphiql`](http://localhost:9000/api
 ```
 noification {
   id: id
-  user_id: string // receiver user id
-  sender_id: string // sender user id
+  user_ids: string // array of receivers userIds
+  sender_id: string // sender userId
   sender_name: string // sender user name
   source: string // sapien platform, wallet, chat
   read: boolean // read flag
-  data: {
+  payload: {
     action: string // comment, post, reply, echo ... etc
     action_id: string // commentId, postId, ... etc
     title: string
     content: string
     url: string
+    vote_type: string // comment or post
   }
 }
 ```

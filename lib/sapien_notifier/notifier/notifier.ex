@@ -15,10 +15,8 @@ defmodule SapienNotifier.Notifier do
   def get_notification!(id), do: Repo.get!(Notification, id)
 
   def get_user_notifications(user_id) do
-    # keep for user_ids array implementation
-    # query = from n in Notification, where: ^user_id in n.user_ids, order_by: [desc: :inserted_at]
-
-    query = from n in Notification, where: n.user_id == ^user_id, order_by: [desc: :inserted_at], limit: 20
+    query = from n in Notification, where: ^user_id in n.user_ids, order_by: [desc: :inserted_at],
+    limit: 20
     Repo.all(query)
   end
 

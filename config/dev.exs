@@ -26,4 +26,5 @@ config :sapien_notifier, SapienNotifier.Repo,
   password: "postgres",
   database: "sapien_notifier_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 10,
+  log_level: :info

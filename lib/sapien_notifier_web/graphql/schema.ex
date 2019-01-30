@@ -40,12 +40,12 @@ defmodule SapienNotifierWeb.Schema do
   mutation do
     @desc "Create a notification"
     field :create_notification, :notification do
-      arg :user_id, non_null(:id)
+      arg :user_ids, list_of(non_null(:string))
       arg :sender_id, :string
       arg :sender_name, :string
       arg :read, :boolean, default_value: false
       arg :source, :string, default_value: "Sapien"
-      arg :data, :data_params
+      arg :payload, :payload_params
       resolve &Resolvers.Notifications.create_notification/3
     end
 
@@ -60,16 +60,13 @@ defmodule SapienNotifierWeb.Schema do
     @desc "When notification created"
     field :notification_added, :notification do
       arg :user_id, non_null(:id)
-      trigger :create_notification,
-        topic: fn args ->
-          Logger.info "notification_added SUBS on trigger: #{inspect args}"
-          args.user_id
-        end
+      # trigger :create_notification,
+      #   topic: fn args ->
+        #   args.user_ids
+        # end
 
       # replace _info with  %{context: %{ current_user: user_id }} to get current user
-      # use {user_id}/create_notification on topic after activate notification channel
       config fn args, _info ->
-        Logger.info "notification_added SUBS on config: #{inspect args}"
         {:ok, topic: args.user_id}
       end
     end

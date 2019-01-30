@@ -23,17 +23,23 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
     end
   end
 
-  def create_notification(_, args, _) do
+  def create_notification(_, args, %{context: %{current_user: current_user}}) do
     with {:ok, notification} <- Notifier.create_notification(args) do
+      Logger.warn "current_user on create_notification context #{inspect current_user}"
+      Logger.warn "user_ids length #{inspect length(notification.user_ids)}"
+      Enum.each(notification.user_ids, fn user_id ->
+        Absinthe.Subscription.publish(SapienNotifierWeb.Endpoint, notification, notification_added: user_id)
+      end)
+
       {:ok,
       %{id: notification.id,
-        user_id: notification.user_id,
+        user_ids: notification.user_ids,
         source: notification.source,
         sender_name: notification.sender_name,
         sender_id: notification.sender_id,
         read: notification.read,
         inserted_at: notification.inserted_at,
-        data: notification.data }
+        payload: notification.payload}
       }
     end
   end
