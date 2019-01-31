@@ -8,7 +8,8 @@
 use Mix.Config
 
 config :sapien_notifier,
-  ecto_repos: [SapienNotifier.Repo]
+  ecto_repos: [SapienNotifier.Repo],
+  migration_timestamps: [type: :utc_datetime]
 
 # Configures the endpoint
 config :sapien_notifier, SapienNotifierWeb.Endpoint,

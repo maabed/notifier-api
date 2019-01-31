@@ -4,6 +4,7 @@ defmodule SapienNotifier.Notifier.Notification do
   """
   use Ecto.Schema
   import Ecto.Changeset
+  # alias SapienNotifier.Type.ZonedDateTime
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -18,7 +19,7 @@ defmodule SapienNotifier.Notifier.Notification do
     # field :target, {:array :string} # once mobile app ready
     # field :devices, {:array, :map} # once mobile app ready
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

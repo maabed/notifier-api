@@ -23,7 +23,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :sender_name, :string
     field :read, non_null(:boolean)
     field :source, :string
-    field :inserted_at, :naive_datetime
+    field :inserted_at, :time
     resolve_type fn _, _ -> nil end
   end
 
@@ -35,7 +35,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :sender_name, :string
     field :read, non_null(:boolean)
     field :source, :string
-    field :inserted_at, :naive_datetime
+    field :inserted_at, :time
     field :payload, :query_payload
   end
 
@@ -56,7 +56,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :sender_name, :string
     field :read, non_null(:boolean)
     field :source, :string
-    field :inserted_at, :naive_datetime
+    field :inserted_at, :time
     field :payload, :payload
   end
 
@@ -67,6 +67,25 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :body, :string
     field :url, :string
     field :vote_type, :string
+  end
+
+  @desc """
+  ISOz datetime formatISO 8601
+  """
+  scalar :time do
+    parse(&Timex.parse(&1.value, "{ISO:Extended}"))
+    serialize(&Timex.format!(&1, "{ISO:Extended}"))
+  end
+
+  @desc """
+  Unix timestamp (in milliseconds).
+  """
+  scalar :timestamp do
+    parse(&Timex.from_unix(&1.value, :millisecond))
+
+    serialize(fn time ->
+      DateTime.to_unix(Timex.to_datetime(time), :millisecond)
+    end)
   end
 
   def key(k) do

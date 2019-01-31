@@ -12,8 +12,7 @@ defmodule SapienNotifier.Repo.Migrations.CreateNotifications do
       add :payload, :map
       # add :target, {:array, :string}
       # add :devices, {:array, :map}
-
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
   end
 end
