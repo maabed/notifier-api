@@ -43,6 +43,7 @@ defmodule SapienNotifierWeb.Schema do
       arg :user_ids, list_of(non_null(:string))
       arg :sender_id, :string
       arg :sender_name, :string
+      arg :sender_thumb, :string
       arg :read, :boolean, default_value: false
       arg :source, :string, default_value: "Sapien"
       arg :payload, :payload_params

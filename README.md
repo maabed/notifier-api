@@ -24,6 +24,7 @@ noification {
   user_ids: string // array of receivers userIds
   sender_id: string // sender userId
   sender_name: string // sender user name
+  sender_thumb: string // sender thumbnail
   source: string // sapien platform, wallet, chat
   read: boolean // read flag
   payload: {

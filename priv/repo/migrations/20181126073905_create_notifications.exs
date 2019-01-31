@@ -7,6 +7,7 @@ defmodule SapienNotifier.Repo.Migrations.CreateNotifications do
       add :user_ids, {:array, :text}
       add :sender_id, :string
       add :sender_name, :string
+      add :sender_thumb, :string
       add :read, :boolean, null: false, default: false
       add :source, :string, default: "Sapien"
       add :payload, :map

@@ -21,6 +21,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :user_ids, list_of(non_null(:string))
     field :sender_id, :id
     field :sender_name, :string
+    field :sender_thumb, :string
     field :read, non_null(:boolean)
     field :source, :string
     field :inserted_at, :time
@@ -33,6 +34,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :user_ids, list_of(non_null(:string))
     field :sender_id, :id
     field :sender_name, :string
+    field :sender_thumb, :string
     field :read, non_null(:boolean)
     field :source, :string
     field :inserted_at, :time
@@ -54,6 +56,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :user_ids, list_of(non_null(:string))
     field :sender_id, :id
     field :sender_name, :string
+    field :sender_thumb, :string
     field :read, non_null(:boolean)
     field :source, :string
     field :inserted_at, :time
