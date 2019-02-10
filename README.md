@@ -18,24 +18,35 @@ GraphiQL playground at [`localhost:9000/api/graphiql`](http://localhost:9000/api
 
 ### Notification schema
 
-```
+Notification object:
+
+```elixir
+
 noification {
   id: id
-  user_ids: string // array of receivers userIds
-  sender_id: string // sender userId
-  sender_name: string // sender user name
-  sender_thumb: string // sender thumbnail
-  source: string // sapien platform, wallet, chat
-  read: boolean // read flag
+  sender_id: string # sender userId
+  sender_name: string # sender user name
+  sender_thumb: string # sender thumbnail
+  source: string # sapien platform, wallet, chat
   payload: {
-    action: string // comment, post, reply, echo ... etc
-    action_id: string // commentId, postId, ... etc
+    action: string # comment, post, reply, echo ... etc
+    action_id: string # commentId, postId, ... etc
     title: string
     content: string
     url: string
-    vote_type: string // comment or post
+    vote_type: string # comment or post
   }
 }
+```
+
+Receivers userIds stored on another table: noification `has_many` receivers
+
+```elixir
+receivers {
+  userId: string
+  read: boolean
+}
+
 ```
 
 `devices`and `target` will be added once email, SMS and push notifications implemented.

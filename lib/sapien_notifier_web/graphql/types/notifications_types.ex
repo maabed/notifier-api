@@ -18,11 +18,9 @@ defmodule SapienNotifierWeb.Type.Notifications do
 
   interface :notification_record do
     field :id, non_null(:id)
-    field :user_ids, list_of(non_null(:string))
     field :sender_id, :id
     field :sender_name, :string
     field :sender_thumb, :string
-    field :read, non_null(:boolean)
     field :source, :string
     field :inserted_at, :time
     resolve_type fn _, _ -> nil end
@@ -31,7 +29,6 @@ defmodule SapienNotifierWeb.Type.Notifications do
   object :query_notification do
     interface :notification_record
     field :id, non_null(:id)
-    field :user_ids, list_of(non_null(:string))
     field :sender_id, :id
     field :sender_name, :string
     field :sender_thumb, :string
@@ -53,14 +50,18 @@ defmodule SapienNotifierWeb.Type.Notifications do
   object :notification do
     interface :notification_record
     field :id, non_null(:id)
-    field :user_ids, list_of(non_null(:string))
+    field :read, :boolean, default_value: false
     field :sender_id, :id
     field :sender_name, :string
     field :sender_thumb, :string
-    field :read, non_null(:boolean)
     field :source, :string
     field :inserted_at, :time
     field :payload, :payload
+  end
+
+  object :receiver do
+    field :user_id, non_null(:string)
+    field :read, non_null(:boolean)
   end
 
   object :payload do
