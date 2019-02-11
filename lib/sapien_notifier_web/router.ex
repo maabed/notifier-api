@@ -8,7 +8,7 @@ defmodule SapienNotifierWeb.Router do
 
   scope "/api" do
     pipe_through :api
-
+    forward "/health", SapienNotifierWeb.PlugRouter
     forward "/graphql", Absinthe.Plug,
       schema: SapienNotifierWeb.Schema
 
