@@ -25,6 +25,6 @@ config :sapien_notifier, SapienNotifier.Repo,
   username: "postgres",
   password: "postgres",
   database: "sapien_notifier_dev",
-  hostname: "localhost",
+  hostname: System.get_env("PG_HOST") || "localhost",
   pool_size: 10,
   log_level: :info

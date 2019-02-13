@@ -51,6 +51,24 @@ receivers {
 
 `devices`and `target` will be added once email, SMS and push notifications implemented.
 
+#### Docker local setup
+
+Run following commands
+
+ -Build docker image `docker-compose build`
+ -Start notifier container `docker-compose up`
+ -When run docker locally for the first time you need to setup notifier db as below:
+
+open new terminal windows and run below:
+
+```bash
+docker-compose exec phoenix /bin/bash
+mix ecto.create
+mix ecto.migrate
+```
+
+GraphiQL playground at [`localhost:9000/api/graphiql`](http://localhost:9000/api/graphiql)
+
 ### Production
 
 [deployment guides](https://hexdocs.pm/phoenix/deployment.html).
