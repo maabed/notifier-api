@@ -55,9 +55,9 @@ receivers {
 
 Run following commands
 
- -Build docker image `docker-compose build`
- -Start notifier container `docker-compose up`
- -When run docker locally for the first time you need to setup notifier db as below:
+* Build docker image `docker-compose build`
+* Start notifier container `docker-compose up`
+* When run docker locally for the first time you need to setup notifier db as below:
 
 open new terminal windows and run below:
 
