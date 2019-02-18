@@ -15,8 +15,8 @@ use Mix.Config
 #   check_origin: false
 
 config :sapien_notifier, SapienNotifierWeb.Endpoint,
-  http: [port: {:system, "PORT"}],
-  url: [host: System.get_env("HOST")],
+  http: [port: System.get_env("PORT") |> String.to_integer()],
+  url: [host: System.get_env("HOST"), port: 80, schema: "http"],
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
   debug_errors: true,
   code_reloader: false,
