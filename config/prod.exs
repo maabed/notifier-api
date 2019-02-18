@@ -4,13 +4,24 @@ use Mix.Config
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
 # Configures the endpoint
+
+# SSL settings
+# config :sapien_notifier, SapienNotifierWeb.Endpoint,
+#   load_from_system_env: true,
+#   http: [port: {:system, "PORT"}],
+#   url: [host: System.get_env("HOST"), port: 443, scheme: "https"],
+#   force_ssl: [rewrite_on: [:x_forwarded_proto]],
+#   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
+#   check_origin: false
+
 config :sapien_notifier, SapienNotifierWeb.Endpoint,
-  load_from_system_env: true,
   http: [port: {:system, "PORT"}],
-  url: [host: System.get_env("HOST"), port: 443, scheme: "https"],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  url: [host: System.get_env("HOST")],
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
-  check_origin: false
+  debug_errors: true,
+  code_reloader: false,
+  check_origin: false,
+  watchers: []
 
 # Do not print debug messages in production
 config :logger, level: :info
