@@ -5,10 +5,10 @@
 set -e
 
 # Ensure the app's dependencies are installed
-mix deps.get
+#mix deps.get
 
 # Wait for Postgres to become available.
-until psql -h "db" -p "5432" -U "postgres" -w -c '\q' 2>/dev/null; do
+until psql -h $PG_HOST -p "5432" -d $PG_DATABASE -U $PG_USER -w -c '\q' 2>/dev/null; do
   >&2 echo "Postgres is unavailable - sleeping"
   sleep 2
 done

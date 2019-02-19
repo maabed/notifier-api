@@ -1,29 +1,23 @@
-# Alias this container as builder:
-FROM bitwalker/alpine-elixir-phoenix as builder
+FROM elixir:1.8.1
 
-ARG SECRET_KEY_BASE
-ARG DATABASE_URL
-ARG PORT
+ARG SECRET_KEY_BASE=123
 
-#COPY rel ./rel
-#COPY config ./config
-#COPY lib ./lib
-#COPY priv ./priv
-#COPY mix.exs .
-#COPY mix.lock .
+# Install debian packages
+RUN apt-get update
+RUN apt-get install --yes build-essential inotify-tools postgresql-client
+
+# Install Phoenix packages
+RUN mix local.hex --force
+RUN mix local.rebar --force
+RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez
+
+ENV MIX_ENV=prod
 
 COPY . .
 
-RUN export MIX_ENV=prod && \
-#    mix do deps.get, compile && \
-    mix deps.get
-#    mix release.init
-#    mix ecto.setup
+RUN mix deps.get
 
-#RUN APP_NAME="notifier" && \
-#    RELEASE_DIR=`ls -d _build/prod/rel/$APP_NAME/releases/*/` && \
-#    mkdir /export && \
-#    tar -xf "$RELEASE_DIR/$APP_NAME.tar.gz" -C /export
+EXPOSE 443 80 9000
+#HEALTHCHECK CMD wget -q -O /dev/null http://localhost:9000/api/health || exit 1
 
-ENTRYPOINT ["/bin/bash", "-c", "mix"]
-CMD ["phx.server"]
+CMD ["./run.sh"]
