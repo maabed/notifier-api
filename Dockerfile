@@ -1,4 +1,4 @@
-FROM elixir:1.8.1
+FROM elixir:latest
 
 ARG SECRET_KEY_BASE=123
 
@@ -16,6 +16,7 @@ ENV MIX_ENV=prod
 COPY . .
 
 RUN mix deps.get
+RUN mix do compile
 
 EXPOSE 443 80 9000
 #HEALTHCHECK CMD wget -q -O /dev/null http://localhost:9000/api/health || exit 1
