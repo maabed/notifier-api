@@ -53,7 +53,9 @@ defmodule SapienNotifier.MixProject do
       {:faker, "~> 0.11.2", only: [:dev, :test]},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:timex, "~> 3.1"},
-      {:distillery, "~> 2.0"}
+      # {:cors_plug, "~> 2.0"},
+      {:distillery, "~> 2.0", warn_missing: false},
+      {:edeliver, ">= 1.6.0"}
     ]
   end
 

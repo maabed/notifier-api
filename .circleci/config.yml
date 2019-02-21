@@ -1,0 +1,100 @@
+version: 2.1 
+
+jobs:
+  build:
+    docker:  # run the steps with Docker
+      - image: circleci/elixir:latest  # ...with this image as the primary container; this is where all `steps` will run
+        environment:  # environment variables for primary container
+          MIX_ENV: dev
+      # database image
+      - image: circleci/postgres:9.6-alpine-postgis-ram
+    working_directory: ~/app   # directory where steps will run
+    steps:  # commands that comprise the `build` job
+      - checkout  # check out source code to working directory
+
+      - run: mix local.hex --force  # install Hex locally (without prompt)
+      - run: mix local.rebar --force  # fetch a copy of rebar (without prompt)
+
+      - restore_cache:  # restores saved mix cache for the deps folder
+          keys:  # list of cache keys, in decreasing specificity
+            - notifier-mix-cache-{{ checksum "mix.lock" }}
+            - notifier-mix-cache-{{ .Branch }}
+            - notifier-mix-cache
+      - restore_cache:  # restores saved build cache
+          keys:
+            - notifier-build-cache-{{ .Branch }}
+            - notifier-build-cache
+
+      - run:  # special utility that stalls main process until DB is ready
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run: mix do deps.get, compile  # get updated dependencies & compile them
+
+      - save_cache:  # generate and store cache so `restore_cache` works for the deps folder
+         key: notifier-mix-cache-{{ checksum "mix.lock" }}
+         paths: "deps"
+
+      - save_cache:  # make another less specific cache
+         key: notifier-mix-cache-{{ .Branch }}
+         paths: "deps"
+
+      - save_cache:  # you should really save one more cache just in case
+         key: notifier-mix-cache
+         paths: "deps"
+
+      - save_cache: # don't forget to save a *build* cache, too
+         key: notifier-build-cache-{{ .Branch }}
+         paths: "_build"
+
+      - save_cache: # and one more build cache for good measure
+         key: notifier-build-cache
+         paths: "_build"
+
+      - run: mix ecto.create
+      - run: mix ecto.migrate
+
+  deploy:
+    docker:  # run the steps with Docker
+      - image: circleci/elixir:latest  # ...with this image as the primary container; this is where all `steps` will run
+        environment:  # environment variables for primary container
+          MIX_ENV: prod
+      # database image
+      - image: circleci/postgres:9.6-alpine-postgis-ram
+    working_directory: ~/app   # directory where steps will run
+    steps:
+      - checkout  # check out source code to working directory
+      - run: mix local.hex --force  # install Hex locally (without prompt)
+      - run: mix local.rebar --force  # fetch a copy of rebar (without prompt)
+      - run: mix do deps.get, compile  # get updated dependencies & compile them
+      - run: mix edeliver build release production
+      - run: mix edeliver deploy release to production
+      - run: mix edeliver restart production
+      # or use deployment scripts on deploy dir
+      # - run:
+      #     name: Deploy if tests pass and branch is develop
+      #     command: bash deploy/deploy.sh
+
+workflows:
+  version: 2
+  build-and-deploy-staging:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - staging
+  build-and-deploy-production:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
