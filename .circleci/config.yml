@@ -53,6 +53,7 @@ jobs:
                           -p $PORT_VALUE:$PORT_VALUE \
                           --name local-notifier $FULL_IMAGE_NAME
             sleep 10
+            set -x
             docker run --network container:local-notifier appropriate/curl -sSLI --retry 10 --retry-connrefused http://172.17.0.2:$PORT_VALUE/api/health | grep " 200"
       - run:
           name: Save image to an archive
