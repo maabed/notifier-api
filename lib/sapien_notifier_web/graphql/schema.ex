@@ -44,6 +44,7 @@ defmodule SapienNotifierWeb.Schema do
       arg :sender_id, :string
       arg :sender_name, :string
       arg :sender_thumb, :string
+      arg :sender_profile_id, :string
       arg :source, :string, default_value: "Sapien"
       arg :payload, :payload_params
       resolve &Resolvers.Notifications.create_notification/3

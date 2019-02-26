@@ -36,6 +36,7 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
         source: notification.source,
         sender_name: notification.sender_name,
         sender_thumb: notification.sender_thumb,
+        sender_profile_id: notification.sender_profile_id,
         sender_id: notification.sender_id,
         inserted_at: notification.inserted_at,
         payload: notification.payload

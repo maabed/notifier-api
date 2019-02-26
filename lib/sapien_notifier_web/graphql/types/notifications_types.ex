@@ -21,6 +21,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :sender_id, :id
     field :sender_name, :string
     field :sender_thumb, :string
+    field :sender_profile_id, :id
     field :source, :string
     field :inserted_at, :time
     resolve_type fn _, _ -> nil end
@@ -32,6 +33,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :sender_id, :id
     field :sender_name, :string
     field :sender_thumb, :string
+    field :sender_profile_id, :id
     field :read, non_null(:boolean)
     field :source, :string
     field :inserted_at, :time
@@ -54,6 +56,8 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :sender_id, :id
     field :sender_name, :string
     field :sender_thumb, :string
+    field :sender_profile_id, :id
+    field :sender_profile_id, 
     field :source, :string
     field :inserted_at, :time
     field :payload, :payload

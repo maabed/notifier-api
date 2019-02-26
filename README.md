@@ -27,6 +27,7 @@ noification {
   sender_id: string # sender userId
   sender_name: string # sender user name
   sender_thumb: string # sender thumbnail
+  sender_profile_id: string # sender profileId
   source: string # sapien platform, wallet, chat
   payload: {
     action: string # comment, post, reply, echo ... etc
