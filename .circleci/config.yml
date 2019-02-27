@@ -53,9 +53,13 @@ jobs:
                           -p $PORT_VALUE:$PORT_VALUE \
                           --name local-notifier $FULL_IMAGE_NAME
             sleep 10
-            docker ps 
-            docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' local-notifier
-            docker run --network container:local-notifier appropriate/curl -sSLI --retry 10 --retry-connrefused http://172.17.0.3:$PORT_VALUE/api/health | grep " 200"
+            docker ps
+            LOCAL_NOTIFIER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' local-notifier)
+            echo $LOCAL_NOTIFIER_IP
+            docker logs local-notifier
+            sleep 10
+            docker logs local-notifier
+            docker run --network container:local-notifier appropriate/curl -sSLI --retry 10 --retry-connrefused http://$LOCAL_NOTIFIER_IP:$PORT_VALUE/api/health
       - run:
           name: Save image to an archive
           command: |
