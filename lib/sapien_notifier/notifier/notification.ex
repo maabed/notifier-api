@@ -13,6 +13,7 @@ defmodule SapienNotifier.Notifier.Notification do
     field :sender_id, :string
     field :sender_name, :string
     field :sender_thumb, :string
+    field :sender_profile_id, :string
     field :source, :string, default: "Sapien"
     field :payload, :map
     # field :target, {:array :string} # once mobile app ready
@@ -28,7 +29,7 @@ defmodule SapienNotifier.Notifier.Notification do
   @doc false
   def changeset(%Notification{} = notification, attrs) do
     notification
-    |> cast(attrs, [:sender_id, :sender_name, :sender_thumb, :source, :payload])
-    |> validate_required([:sender_id, :sender_name, :sender_thumb, :source, :payload])
+    |> cast(attrs, [:sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload])
+    |> validate_required([:sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload])
   end
 end
