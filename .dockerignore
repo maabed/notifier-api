@@ -13,3 +13,4 @@ sapien_notifier-*.tar
 /config/*.secret.exs
 .env
 /pgdata/
+.circleci
