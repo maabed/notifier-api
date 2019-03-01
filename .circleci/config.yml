@@ -38,20 +38,7 @@ jobs:
       - run:
           name: Test image
           command: |
-            docker run -d -e "PORT=$PORT_VALUE" \
-                          -e "POOL_SIZE=$POOL_SIZE_VALUE" \
-                          -e "HOST=$HOST_VALUE" \
-                          -e "DATABASE_URL=$DATABASE_URL_VALUE" \
-                          -e "GUARDIAN_SECRET_KEY=$GUARDIAN_SECRET_KEY_VALUE" \
-                          -e "SECRET_KEY_BASE=$SECRET_KEY_BASE_VALUE" \
-                          -e "JWT_PUBLIC_KEY=$JWT_PUBLIC_KEY_VALUE" \
-                          -e "PG_HOST=$PG_HOST_VALUE" \
-                          -e "PG_DATABASE=$PG_DATABASE_VALUE" \
-                          -e "PG_USER=$PG_USER_VALUE" \
-                          -e "PGPASSWORD=$PGPASSWORD_VALUE" \
-                          --expose $PORT_VALUE \
-                          -p $PORT_VALUE:$PORT_VALUE \
-                          --name local-notifier $FULL_IMAGE_NAME
+            docker-compose -f .circleci/docker-compose.yml up -d
             sleep 10
             docker ps
             LOCAL_NOTIFIER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' local-notifier)

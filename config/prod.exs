@@ -21,7 +21,7 @@ config :sapien_notifier, SapienNotifier.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "18"),
-  ssl: true
+  ssl: false
 
 # Configures Guardian
 config :sapien_notifier, SapienNotifierWeb.Guardian,
