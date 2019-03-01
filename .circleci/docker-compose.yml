@@ -8,7 +8,6 @@ services:
     - "$PORT_VALUE:$PORT_VALUE"
     environment:
       - PORT=$PORT_VALUE
-      - POOL_SIZE=$POOL_SIZE_VALUE
       - HOST=$HOST_VALUE
       - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
       - GUARDIAN_SECRET_KEY=$GUARDIAN_SECRET_KEY_VALUE
