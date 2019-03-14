@@ -3,13 +3,14 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   Notifications resolvers
   """
   alias SapienNotifier.Notifier
+  require Logger
 
   def all_notifications(_, _, _) do
     {:ok, Notifier.list_notifications()}
   end
 
-  def user_notification(_, %{user_id: user_id}, _) do
-    {:ok, Notifier.get_user_notifications(user_id)}
+  def user_notification(_, %{user_id: user_id, limit: limit, offset: offset}, _) do
+    {:ok, Notifier.get_user_notifications(user_id, limit, offset)}
   end
 
   def notification(_, %{id: id}, _) do
@@ -29,6 +30,7 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   end
 
   def create_notification(_, args, _) do
+    Logger.info "args: #{inspect args}"
     with {:ok, notification} <- Notifier.create_notification(args) do
       data = %{
         id: notification.id,

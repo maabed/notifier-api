@@ -27,6 +27,8 @@ defmodule SapienNotifierWeb.Schema do
     @desc "Get user notification"
     field :user_notification, list_of :query_notification do
       arg :user_id, non_null(:id)
+      arg :limit, :integer
+      arg :offset, :integer
       resolve &Resolvers.Notifications.user_notification/3
     end
 

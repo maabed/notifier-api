@@ -19,11 +19,13 @@ defmodule SapienNotifier.Notifier do
       preload: [receivers: r]
   end
 
-  def get_user_notifications(user_id) do
+  def get_user_notifications(user_id, limit, offset) do
     Repo.all from n in Notification,
       join: r in assoc(n, :receivers),
       where: r.user_id == ^user_id,
       select: %{n | read: r.read },
+      limit: ^limit,
+      offset: ^offset,
       order_by: [desc: n.inserted_at]
       # preload: [receivers: r] # use this to load all receivers data
   end
