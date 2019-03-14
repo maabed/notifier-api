@@ -3,7 +3,6 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   Notifications resolvers
   """
   alias SapienNotifier.Notifier
-  require Logger
 
   def all_notifications(_, _, _) do
     {:ok, Notifier.list_notifications()}
@@ -30,7 +29,6 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   end
 
   def create_notification(_, args, _) do
-    Logger.info "args: #{inspect args}"
     with {:ok, notification} <- Notifier.create_notification(args) do
       data = %{
         id: notification.id,
