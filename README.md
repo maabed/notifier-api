@@ -40,7 +40,7 @@ notification {
 }
 ```
 
-Receivers userIds stored on another table: noification `has_many` receivers
+Receivers userIds stored on another table: notification `has_many` receivers
 
 ```elixir
 receivers {
