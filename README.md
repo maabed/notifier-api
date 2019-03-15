@@ -22,7 +22,7 @@ Notification object:
 
 ```elixir
 
-noification {
+notification {
   id: id
   sender_id: string # sender userId
   sender_name: string # sender user name
