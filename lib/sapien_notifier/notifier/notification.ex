@@ -20,8 +20,8 @@ defmodule SapienNotifier.Notifier.Notification do
     # field :devices, {:array, :map} # once mobile app ready
 
     has_many :receivers, Receiver, on_delete: :delete_all
-    # holds read status for specific user_id when loaded via a join
-    field :read, :boolean, virtual: true
+    # holds notification status for specific user_id when loaded via a join
+    field :status, :string, virtual: true
 
     timestamps(type: :utc_datetime)
   end

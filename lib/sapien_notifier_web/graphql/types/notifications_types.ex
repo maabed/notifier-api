@@ -34,7 +34,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :sender_name, :string
     field :sender_thumb, :string
     field :sender_profile_id, :id
-    field :read, non_null(:boolean)
+    field :status, non_null(:string)
     field :source, :string
     field :inserted_at, :time
     field :payload, :query_payload
@@ -52,7 +52,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
   object :notification do
     interface :notification_record
     field :id, non_null(:id)
-    field :read, :boolean, default_value: false
+    field :status, :string, default_value: "UNREAD"
     field :sender_id, :id
     field :sender_name, :string
     field :sender_thumb, :string
@@ -64,7 +64,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
 
   object :receiver do
     field :user_id, non_null(:string)
-    field :read, non_null(:boolean)
+    field :status, non_null(:string)
   end
 
   object :payload do

@@ -16,8 +16,14 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
     {:ok, Notifier.get_notification!(id)}
   end
 
+  def update_status(_, %{id: id, status: status}, %{context: %{current_user: current_user}}) do
+    with {:ok, true} <- Notifier.update_status(id, current_user, status) do
+      {:ok, true}
+    end
+  end
+
   def mark_as_read(_, %{id: id}, %{context: %{current_user: current_user}}) do
-    with {:ok, true} <- Notifier.mark_as_read(id, current_user) do
+    with {:ok, true} <- Notifier.update_status(id, current_user, "READ") do
       {:ok, true}
     end
   end
@@ -32,7 +38,7 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
     with {:ok, notification} <- Notifier.create_notification(args) do
       data = %{
         id: notification.id,
-        read: false,
+        status: "UNREAD",
         source: notification.source,
         sender_name: notification.sender_name,
         sender_thumb: notification.sender_thumb,

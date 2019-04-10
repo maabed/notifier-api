@@ -45,7 +45,7 @@ Receivers userIds stored on another table: notification `has_many` receivers
 ```elixir
 receivers {
   userId: string
-  read: boolean
+  status: string
 }
 
 ```
