@@ -3,8 +3,7 @@ defmodule SapienNotifier.Repo.Migrations.CreateReceivers do
 
   def change do
     alter table(:receivers) do
-      add :status, :string, default: "UNREAD", null: false
-      remove :read
+      add :status, :string
     end
   end
 end

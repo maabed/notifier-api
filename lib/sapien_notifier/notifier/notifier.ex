@@ -23,7 +23,7 @@ defmodule SapienNotifier.Notifier do
     Repo.all from n in Notification,
       join: r in assoc(n, :receivers),
       where: r.user_id == ^user_id,
-      select: %{n | status: r.status },
+      select: %{n | read: r.read, status: r.status },
       limit: ^limit,
       offset: ^offset,
       order_by: [desc: n.inserted_at]
@@ -45,6 +45,7 @@ defmodule SapienNotifier.Notifier do
       params_with_relation = %{
         notification_id: notification.id,
         user_id: receiver,
+        read: false,
         status: "UNREAD",
       }
 
@@ -54,6 +55,22 @@ defmodule SapienNotifier.Notifier do
     end)
 
   {:ok, notification}
+  end
+
+  def mark_as_read(id, user_id) do
+    query =
+      from r in Receiver,
+        where: r.notification_id == ^id and r.user_id == ^user_id
+
+    case Repo.one(query) do
+      %Receiver{} = receiver ->
+        receiver
+        |> Ecto.Changeset.change(read: true)
+        |> Repo.update()
+        {:ok, true}
+      nil ->
+        {:error, :not_found}
+    end
   end
 
   def update_status(id, user_id, status) do
@@ -75,7 +92,7 @@ defmodule SapienNotifier.Notifier do
   def mark_all_as_read(user_id) do
     Receiver
     |> where([r], r.user_id == ^user_id)
-    |> update([set: [status: "READ"]])
+    |> update([set: [read: true]])
     |> Repo.update_all([])
 
     {:ok, true}
