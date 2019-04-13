@@ -58,9 +58,16 @@ defmodule SapienNotifierWeb.Schema do
       resolve &Resolvers.Notifications.mark_as_read/3
     end
 
-    @desc "mark notification as read"
+    @desc "mark all notifications as read"
     field :mark_all_as_read, :boolean do
       resolve &Resolvers.Notifications.mark_all_as_read/3
+    end
+
+    @desc "update notification status"
+    field :update_status, :boolean do
+      arg :id, non_null(:id)
+      arg :status, :string
+      resolve &Resolvers.Notifications.update_status/3
     end
   end
 

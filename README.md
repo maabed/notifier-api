@@ -46,6 +46,7 @@ Receivers userIds stored on another table: notification `has_many` receivers
 receivers {
   userId: string
   read: boolean
+  status: string
 }
 
 ```
