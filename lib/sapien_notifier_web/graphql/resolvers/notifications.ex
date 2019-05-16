@@ -14,6 +14,10 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
     {:ok, Notifier.get_user_notifications(user_id, limit, offset)}
   end
 
+  def user_notification_count(_, %{user_id: user_id}, _) do
+    {:ok, Notifier.get_user_notifications_count(user_id)}
+  end
+
   def notification(_, %{id: id}, _) do
     {:ok, Notifier.get_notification!(id)}
   end
