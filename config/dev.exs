@@ -6,7 +6,7 @@ config :sapien_notifier, SapienNotifierWeb.Endpoint,
   http: [port: 9000],
   debug_errors: true,
   code_reloader: true,
-  check_origin: ["//localhost", "//sapien-notifier.herokuapp.com"],
+  check_origin: ["//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"],
   watchers: []
 
 # Do not include metadata nor timestamps in development logs
