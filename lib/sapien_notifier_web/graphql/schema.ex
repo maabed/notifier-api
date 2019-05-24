@@ -5,7 +5,6 @@ defmodule SapienNotifierWeb.Schema do
   use Absinthe.Schema
 
   alias SapienNotifierWeb.Resolvers
-  require Logger
   import_types SapienNotifierWeb.Type.Notifications
 
   alias SapienNotifierWeb.Schema.Middleware
@@ -24,12 +23,18 @@ defmodule SapienNotifierWeb.Schema do
       resolve &Resolvers.Notifications.all_notifications/3
     end
 
-    @desc "Get user notification"
+    @desc "Get user notifications"
     field :user_notification, list_of :query_notification do
       arg :user_id, non_null(:id)
       arg :limit, :integer
       arg :offset, :integer
       resolve &Resolvers.Notifications.user_notification/3
+    end
+
+    @desc "Get user notifications count"
+    field :user_notification_count, non_null(:integer) do
+      arg :user_id, non_null(:id)
+      resolve &Resolvers.Notifications.user_notification_count/3
     end
 
     @desc "Get notification by id"

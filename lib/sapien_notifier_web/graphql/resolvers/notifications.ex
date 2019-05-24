@@ -3,13 +3,19 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   Notifications resolvers
   """
   alias SapienNotifier.Notifier
+  @defaults_pagination %{limit: 10, offset: 0}
 
   def all_notifications(_, _, _) do
     {:ok, Notifier.list_notifications()}
   end
 
-  def user_notification(_, %{user_id: user_id, limit: limit, offset: offset}, _) do
+  def user_notification(_, %{user_id: user_id} = args, _) do
+    %{limit: limit, offset: offset} = Map.merge(@defaults_pagination, args)
     {:ok, Notifier.get_user_notifications(user_id, limit, offset)}
+  end
+
+  def user_notification_count(_, %{user_id: user_id}, _) do
+    {:ok, Notifier.get_user_notifications_count(user_id)}
   end
 
   def notification(_, %{id: id}, _) do
