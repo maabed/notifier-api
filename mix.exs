@@ -1,7 +1,7 @@
 defmodule SapienNotifier.MixProject do
   use Mix.Project
 
-  @elixir_version "~> 1.7"
+  @elixir_version "~> 1.8"
 
   def project do
     [
@@ -53,6 +53,7 @@ defmodule SapienNotifier.MixProject do
       {:faker, "~> 0.11.2", only: [:dev, :test]},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:timex, "~> 3.1"},
+      {:tzdata, "~> 1.0.0", override: true},
       {:distillery, "~> 2.0"}
     ]
   end

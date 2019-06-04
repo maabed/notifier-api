@@ -10,6 +10,7 @@ defmodule SapienNotifier.Notifier.Receiver do
   schema "receivers" do
     field :user_id, :string
     field :read, :boolean, default: false
+    field :status, :string
 
     belongs_to :notification, Notification
 
@@ -19,7 +20,7 @@ defmodule SapienNotifier.Notifier.Receiver do
   @doc false
   def changeset(receiver, attrs) do
     receiver
-    |> cast(attrs, [:user_id, :read, :notification_id])
-    |> validate_required([:user_id, :read, :notification_id])
+    |> cast(attrs, [:user_id, :read, :status, :notification_id])
+    |> validate_required([:user_id, :read, :status, :notification_id])
   end
 end

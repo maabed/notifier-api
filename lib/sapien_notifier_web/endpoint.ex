@@ -3,9 +3,10 @@ defmodule SapienNotifierWeb.Endpoint do
   use Absinthe.Phoenix.Endpoint
 
   socket "/socket", SapienNotifierWeb.UserSocket,
-    websocket: [timeout: 45_000, check_origin: false]
-
-    # check_origin: Application.get_env(:orcasite, :env) != :prod || Map.fetch!(System.get_env(), "URLS") |> String.split(" ")
+    websocket: [
+      timeout: 45_000,
+      check_origin: ["//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"]
+    ]
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest

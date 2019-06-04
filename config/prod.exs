@@ -10,7 +10,7 @@ config :sapien_notifier, SapienNotifierWeb.Endpoint,
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
   debug_errors: true,
   code_reloader: false,
-  check_origin: false,
+  check_origin: ["//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"],
   watchers: []
 
 # Do not print debug messages in production

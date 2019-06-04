@@ -35,6 +35,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :sender_thumb, :string
     field :sender_profile_id, :id
     field :read, non_null(:boolean)
+    field :status, :string
     field :source, :string
     field :inserted_at, :time
     field :payload, :query_payload
@@ -53,6 +54,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
     interface :notification_record
     field :id, non_null(:id)
     field :read, :boolean, default_value: false
+    field :status, :string
     field :sender_id, :id
     field :sender_name, :string
     field :sender_thumb, :string
@@ -65,6 +67,7 @@ defmodule SapienNotifierWeb.Type.Notifications do
   object :receiver do
     field :user_id, non_null(:string)
     field :read, non_null(:boolean)
+    field :status, :string
   end
 
   object :payload do

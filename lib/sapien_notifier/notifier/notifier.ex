@@ -19,13 +19,22 @@ defmodule SapienNotifier.Notifier do
       preload: [receivers: r]
   end
 
-  def get_user_notifications(user_id) do
+  def get_user_notifications(user_id, limit, offset) do
     Repo.all from n in Notification,
       join: r in assoc(n, :receivers),
       where: r.user_id == ^user_id,
-      select: %{n | read: r.read },
+      select: %{n | read: r.read, status: r.status },
+      limit: ^limit,
+      offset: ^offset,
       order_by: [desc: n.inserted_at]
       # preload: [receivers: r] # use this to load all receivers data
+  end
+
+  def get_user_notifications_count(user_id) do
+    Repo.one from from n in Notification,
+      join: r in assoc(n, :receivers),
+      where: r.user_id == ^user_id,
+      select: count(r.id)
   end
 
   def create_notification(params \\ %{}) do
@@ -44,6 +53,7 @@ defmodule SapienNotifier.Notifier do
         notification_id: notification.id,
         user_id: receiver,
         read: false,
+        status: "UNREAD",
       }
 
       %Receiver{}
@@ -63,6 +73,22 @@ defmodule SapienNotifier.Notifier do
       %Receiver{} = receiver ->
         receiver
         |> Ecto.Changeset.change(read: true)
+        |> Repo.update()
+        {:ok, true}
+      nil ->
+        {:error, :not_found}
+    end
+  end
+
+  def update_status(id, user_id, status) do
+    query =
+      from r in Receiver,
+        where: r.notification_id == ^id and r.user_id == ^user_id
+
+    case Repo.one(query) do
+      %Receiver{} = receiver ->
+        receiver
+        |> Ecto.Changeset.change(status: status)
         |> Repo.update()
         {:ok, true}
       nil ->

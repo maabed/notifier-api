@@ -38,3 +38,6 @@ sapien_notifier-*.tar
 
 # docker postgres data
 /pgdata/
+
+.vscode/
+.idea/

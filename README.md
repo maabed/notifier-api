@@ -4,7 +4,7 @@ Sapien microservice to handle sapien in-App notifications, emails and push notif
 ### Developer Setup
 
 You'll need to install the following dependencies first:
-* [Elixir](https://elixir-lang.org/install.html) 1.7.4
+* [Elixir](https://elixir-lang.org/install.html) 1.8.2
 * [PostgreSQL](https://postgresapp.com/) 10
 
 To start notification server:
@@ -22,7 +22,7 @@ Notification object:
 
 ```elixir
 
-noification {
+notification {
   id: id
   sender_id: string # sender userId
   sender_name: string # sender user name
@@ -40,12 +40,13 @@ noification {
 }
 ```
 
-Receivers userIds stored on another table: noification `has_many` receivers
+Receivers userIds stored on another table: notification `has_many` receivers
 
 ```elixir
 receivers {
   userId: string
   read: boolean
+  status: string
 }
 
 ```
