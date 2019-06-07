@@ -37,6 +37,12 @@ defmodule SapienNotifierWeb.Schema do
       resolve &Resolvers.Notifications.user_notification_count/3
     end
 
+    @desc "Get user notifications count"
+    field :user_unread_notification_count, non_null(:integer) do
+      arg :user_id, non_null(:id)
+      resolve &Resolvers.Notifications.user_unread_notification_count/3
+    end
+
     @desc "Get notification by id"
     field :notification, :query_notification do
       arg :id, non_null(:id)

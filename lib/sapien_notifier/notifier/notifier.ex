@@ -30,6 +30,13 @@ defmodule SapienNotifier.Notifier do
       # preload: [receivers: r] # use this to load all receivers data
   end
 
+  def get_user_unread_notifications_count(user_id) do
+    Repo.one from from n in Notification,
+      join: r in assoc(n, :receivers),
+      where: r.user_id == ^user_id and r.read == false,
+      select: count(r.id)
+  end
+
   def get_user_notifications_count(user_id) do
     Repo.one from from n in Notification,
       join: r in assoc(n, :receivers),
