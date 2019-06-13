@@ -1,4 +1,2 @@
 ExUnit.start()
-
-Ecto.Adapters.SQL.Sandbox.mode(SapienNotification.Repo, :manual)
-
+Ecto.Adapters.SQL.Sandbox.mode(SapienNotifier.Repo, :manual)

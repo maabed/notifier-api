@@ -1,4 +1,4 @@
-defmodule SapienNotification.DataCase do
+defmodule SapienNotifier.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,27 +16,27 @@ defmodule SapienNotification.DataCase do
 
   using do
     quote do
-      alias SapienNotification.Repo
+      alias SapienNotifier.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import SapienNotification.DataCase
+      import SapienNotifier.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(SapienNotification.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(SapienNotifier.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(SapienNotification.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(SapienNotifier.Repo, {:shared, self()})
     end
 
     :ok
   end
 
   @doc """
-  A helper that transform changeset errors to a map of messages.
+  A helper that transforms changeset errors into a map of messages.
 
       assert {:error, changeset} = Accounts.create_user(%{password: "short"})
       assert "password is too short" in errors_on(changeset).password

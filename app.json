@@ -1,0 +1,34 @@
+{
+  "name": "SapienNotifier",
+  "scripts": {},
+  "env": {
+    "PORT": {
+      "required": true
+    },
+    "HOST": {
+      "required": true
+    },
+    "DATABASE_URL": {
+      "required": true
+    },
+    "POOL_SIZE": {
+      "required": true
+    },
+    "GUARDIAN_SECRET_KEY": {
+      "required": true
+    },
+    "JWT_PUBLIC_KEY": {
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [{
+      "url": "https://github.com/helium/heroku-buildpack-elixir.git"
+    }
+  ]
+}
