@@ -25,7 +25,7 @@ defmodule SapienNotifier.Notifier.Notification do
     # holds notification status for specific user_id when loaded via a join
     field :status, :string, virtual: true
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :utc_datetime_usec)
   end
 
   @doc false

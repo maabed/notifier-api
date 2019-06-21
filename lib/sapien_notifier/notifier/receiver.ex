@@ -14,7 +14,7 @@ defmodule SapienNotifier.Notifier.Receiver do
 
     belongs_to :notification, Notification
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :utc_datetime_usec)
   end
 
   @doc false
