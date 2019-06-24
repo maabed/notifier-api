@@ -7,6 +7,7 @@ defmodule SapienNotifier.Notifier.Receiver do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
+  @timestamps_opts [type: :utc_datetime_usec]
   schema "receivers" do
     field :user_id, :string
     field :read, :boolean, default: false
