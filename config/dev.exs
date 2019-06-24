@@ -6,7 +6,7 @@ config :sapien_notifier, SapienNotifierWeb.Endpoint,
   http: [port: 9000],
   debug_errors: true,
   code_reloader: true,
-  check_origin: ["//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"],
+  check_origin: ["//127.0.0.1", "//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"],
   watchers: []
 
 # Do not include metadata nor timestamps in development logs
@@ -26,5 +26,5 @@ config :sapien_notifier, SapienNotifier.Repo,
   password: "postgres",
   database: "sapien_notifier_dev",
   hostname: System.get_env("PG_HOST") || "localhost",
-  pool_size: 10,
+  pool_size: 40,
   log_level: :info
