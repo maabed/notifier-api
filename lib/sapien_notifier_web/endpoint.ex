@@ -5,7 +5,7 @@ defmodule SapienNotifierWeb.Endpoint do
   socket "/socket", SapienNotifierWeb.UserSocket,
     websocket: [
       timeout: 45_000,
-      check_origin: ["//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"]
+      check_origin: ["//127.0.0.1", "//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"]
     ]
   # Serve at "/" the static files from "priv/static" directory.
   #

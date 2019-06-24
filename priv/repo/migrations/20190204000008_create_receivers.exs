@@ -8,7 +8,7 @@ defmodule SapienNotifier.Repo.Migrations.CreateReceivers do
       add :read, :boolean, default: false, null: false
       add :notification_id, references(:notifications, on_delete: :delete_all, type: :binary_id)
 
-      timestamps(type: :utc_datetime)
+      timestamps(type: :utc_datetime_usec)
     end
 
     create index(:receivers, [:notification_id, :user_id])
