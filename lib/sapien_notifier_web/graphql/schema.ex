@@ -1,13 +1,14 @@
-defmodule SapienNotifierWeb.Schema do
+defmodule NotifierWeb.Schema do
   @moduledoc """
   graphql schema
   """
   use Absinthe.Schema
 
-  alias SapienNotifierWeb.Resolvers
-  import_types SapienNotifierWeb.Type.Notifications
+  alias NotifierWeb.Resolvers
+  import_types NotifierWeb.Type.Notifications
+  import_types NotifierWeb.Type.Unseens
 
-  alias SapienNotifierWeb.Schema.Middleware
+  alias NotifierWeb.Schema.Middleware
 
   def middleware(middleware, _field, %{identifier: :mutation}) do
     middleware ++ [Middleware.ChangesetErrors]
@@ -48,6 +49,12 @@ defmodule SapienNotifierWeb.Schema do
       arg :id, non_null(:id)
       resolve &Resolvers.Notifications.notification/3
     end
+
+    @desc "Get unseen"
+    field :get_unseen, :unseen do
+      arg :tribe_id, non_null(:id)
+      resolve &Resolvers.Unseens.get_unseen/3
+    end
   end
 
   mutation do
@@ -80,11 +87,34 @@ defmodule SapienNotifierWeb.Schema do
       arg :status, :string
       resolve &Resolvers.Notifications.update_status/3
     end
+
+    @desc "update unseen"
+    field :update_unseen, :unseen do
+      arg :user_id, non_null(:id)
+      arg :tribe_id, non_null(:id)
+      arg :count, non_null(:integer)
+      resolve &Resolvers.Unseens.update_unseen/3
+    end
+
+    @desc "mark as seen"
+    field :mark_as_seen, :boolean do
+      arg :tribe_id, non_null(:id)
+      resolve &Resolvers.Unseens.mark_as_seen/3
+    end
   end
 
   subscription do
     @desc "When notification created"
     field :notification_added, :notification do
+      arg :user_id, non_null(:id)
+
+      config fn args, _info ->
+        {:ok, topic: args.user_id}
+      end
+    end
+
+    @desc "When unseen record updated"
+    field :unseen_updated, :unseen do
       arg :user_id, non_null(:id)
 
       config fn args, _info ->
