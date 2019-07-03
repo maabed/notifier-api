@@ -1,4 +1,4 @@
-defmodule SapienNotifierWeb.Auth.SecretFetcher do
+defmodule NotifierWeb.Auth.SecretFetcher do
   # require Logger
   # use Guardian.Token.Jwt.SecretFetcher
   # alias Guardian.Token.Jwt.SecretFetcher.SecretFetcherDefaultImpl

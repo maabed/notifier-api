@@ -1,4 +1,4 @@
-defmodule SapienNotifierWeb.Schema.Middleware.ChangesetErrors do
+defmodule NotifierWeb.Schema.Middleware.ChangesetErrors do
   @behaviour Absinthe.Middleware
 
   def call(res, _) do

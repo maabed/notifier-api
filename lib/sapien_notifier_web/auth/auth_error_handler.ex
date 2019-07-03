@@ -1,4 +1,4 @@
-defmodule SapienNotifierWeb.AuthErrorHandler do
+defmodule NotifierWeb.AuthErrorHandler do
   import Plug.Conn
 
   def auth_error(conn, {type, _reason}, _opts) do

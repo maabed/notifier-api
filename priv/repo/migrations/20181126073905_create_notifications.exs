@@ -1,4 +1,4 @@
-defmodule SapienNotifier.Repo.Migrations.CreateNotifications do
+defmodule Notifier.Repo.Migrations.CreateNotifications do
   use Ecto.Migration
 
   def change do

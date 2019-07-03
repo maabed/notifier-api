@@ -1,4 +1,5 @@
-defmodule SapienNotifier.Type.ZonedDateTime do
+defmodule Notifier.Type.ZonedDateTime do
+  @moduledoc false
   @behaviour Ecto.Type
   def type, do: :datetime
 

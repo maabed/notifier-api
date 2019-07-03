@@ -1,9 +1,11 @@
-defmodule SapienNotifierWeb.Guardian do
-  use Guardian, otp_app: :SapienNotifier
+defmodule NotifierWeb.Guardian do
+  @moduledoc false
+
+  use Guardian, otp_app: :Notifier
   require Logger
 
   def current_user(conn) do
-    SapienNotifierWeb.Guardian.Plug.current_resource(conn["user"]["_id"])
+    NotifierWeb.Guardian.Plug.current_resource(conn["user"]["_id"])
   end
 
   def fetch_secret do

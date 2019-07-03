@@ -1,4 +1,4 @@
-defmodule SapienNotifier.Repo.Migrations.AlterTimestampsTypes do
+defmodule Notifier.Repo.Migrations.AlterTimestampsTypes do
   use Ecto.Migration
 
   def change do

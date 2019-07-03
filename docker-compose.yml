@@ -12,7 +12,7 @@ services:
     environment:
       PG_USER: postgres
       PG_PASSWORD: postgres
-      PG_DATABASE: sapien_notifier_dev
+      PG_DATABASE: notifier_dev
       PG_PORT: 5432
       PG_HOST: postgres
       PORT: 9000

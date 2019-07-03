@@ -1,8 +1,8 @@
-defmodule SapienNotifierWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :sapien_notifier
+defmodule NotifierWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :notifier
   use Absinthe.Phoenix.Endpoint
 
-  socket "/socket", SapienNotifierWeb.UserSocket,
+  socket "/socket", NotifierWeb.UserSocket,
     websocket: [
       timeout: 45_000,
       check_origin: ["//127.0.0.1", "//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"]
@@ -13,7 +13,7 @@ defmodule SapienNotifierWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :sapien_notifier,
+    from: :notifier,
     gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
@@ -29,7 +29,7 @@ defmodule SapienNotifierWeb.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    body_reader: {SapienNotifierWeb.BodyReader, :read_body, []},
+    body_reader: {NotifierWeb.BodyReader, :read_body, []},
     json_decoder: Phoenix.json_library()
 
   plug Plug.MethodOverride
@@ -40,10 +40,10 @@ defmodule SapienNotifierWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   plug Plug.Session,
     store: :cookie,
-    key: "_sapien_notifier_key",
+    key: "_notifier_key",
     signing_salt: "/83W7kX3"
 
-  plug SapienNotifierWeb.Router
+  plug NotifierWeb.Router
 
   @doc """
   Callback invoked for dynamically configuring the endpoint.

@@ -1,6 +1,6 @@
-defmodule SapienNotifier.Repo do
+defmodule Notifier.Repo do
   use Ecto.Repo,
-    otp_app: :sapien_notifier,
+    otp_app: :notifier,
     adapter: Ecto.Adapters.Postgres
 
   @doc """

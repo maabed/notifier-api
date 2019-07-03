@@ -1,6 +1,6 @@
-defmodule SapienNotifier do
+defmodule Notifier do
   @moduledoc """
-  SapienNotifier keeps the contexts that define your domain
+  Notifier keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

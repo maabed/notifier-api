@@ -1,10 +1,10 @@
-defmodule SapienNotifier.Notifier.Notification do
+defmodule Notifier.Notification do
   @moduledoc """
-  Notifications model
+  Notifications schema
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias SapienNotifier.Notifier.{Notification, Receiver}
+  alias Notifier.{Notification, Receiver}
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id

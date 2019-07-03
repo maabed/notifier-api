@@ -1,21 +1,21 @@
-defmodule SapienNotifierWeb.Router do
-  use SapienNotifierWeb, :router
+defmodule NotifierWeb.Router do
+  use NotifierWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug SapienNotifierWeb.Context
+    plug NotifierWeb.Context
   end
 
   scope "/api" do
     pipe_through :api
-    forward "/health", SapienNotifierWeb.PlugRouter
+    forward "/health", NotifierWeb.PlugRouter
     forward "/graphql", Absinthe.Plug,
-      schema: SapienNotifierWeb.Schema
+      schema: NotifierWeb.Schema
 
     if Mix.env() == :dev do
       forward "/graphiql", Absinthe.Plug.GraphiQL,
-        schema: SapienNotifierWeb.Schema,
-        socket: SapienNotifierWeb.UserSocket,
+        schema: NotifierWeb.Schema,
+        socket: NotifierWeb.UserSocket,
         interface: :playground
     end
   end

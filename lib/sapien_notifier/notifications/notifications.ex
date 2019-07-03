@@ -1,11 +1,11 @@
-defmodule SapienNotifier.Notifier do
+defmodule Notifier.Notifications do
   @moduledoc """
   The Notifier context.
   """
-
+  require Logger
   import Ecto.Query, warn: false
-  alias SapienNotifier.Notifier.{Notification, Receiver}
-  alias SapienNotifier.Repo
+  alias Notifier.{Notification, Receiver}
+  alias Notifier.Repo
 
   def list_notifications, do: Repo.all(Notification)
 
@@ -48,16 +48,23 @@ defmodule SapienNotifier.Notifier do
     %Notification{}
     |> Notification.changeset(params)
     |> Repo.insert()
-    |> parse_and_insert_receivers(params.receivers)
+    |> case do
+      {:ok, notification} ->
+        parse_and_insert_receivers(notification.id, params.receivers)
+        {:ok, notification}
+
+      error ->
+        Logger.info "Error create_notification: #{inspect(error)}"
+    end
   end
 
-  def parse_and_insert_receivers({:ok, notification}, receivers) do
+  def parse_and_insert_receivers(notification_id, receivers) do
     receivers
     |> Enum.map(&String.trim/1)
     |> Enum.reject(& &1 == "")
     |> Enum.map(fn receiver ->
       params_with_relation = %{
-        notification_id: notification.id,
+        notification_id: notification_id,
         user_id: receiver,
         read: false,
         status: "UNREAD",
@@ -67,8 +74,6 @@ defmodule SapienNotifier.Notifier do
       |> Receiver.changeset(params_with_relation)
       |> Repo.insert()
     end)
-
-  {:ok, notification}
   end
 
   def mark_as_read(id, user_id) do
@@ -110,19 +115,5 @@ defmodule SapienNotifier.Notifier do
     |> Repo.update_all([])
 
     {:ok, true}
-  end
-
-  def update_notification(%Notification{} = notification, attrs) do
-    notification
-    |> Notification.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def delete_notification(%Notification{} = notification) do
-    Repo.delete(notification)
-  end
-
-  def change_notification(%Notification{} = notification) do
-    Notification.changeset(notification, %{})
   end
 end

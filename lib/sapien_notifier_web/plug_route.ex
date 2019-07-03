@@ -1,5 +1,5 @@
-defmodule SapienNotifierWeb.PlugRouter do
-  alias SapienNotifier.Repo
+defmodule NotifierWeb.PlugRouter do
+  alias Notifier.Repo
 
   @moduledoc false
   use Plug.Router

@@ -1,11 +1,11 @@
-defmodule SapienNotifierWeb.Type.Notifications do
+defmodule NotifierWeb.Type.Notifications do
   @moduledoc """
   Notifications type
   """
 
   use Absinthe.Schema.Notation
-  use Absinthe.Ecto, repo: SapienNotifier.Repo
-  import_types Absinthe.Type.Custom
+  use Absinthe.Ecto, repo: Notifier.Repo
+  import_types NotifierWeb.Type.Scalars
 
   input_object :payload_params do
     field :action_id, :string
@@ -77,25 +77,6 @@ defmodule SapienNotifierWeb.Type.Notifications do
     field :body, :string
     field :url, :string
     field :vote_type, :string
-  end
-
-  @desc """
-  ISOz datetime formatISO 8601
-  """
-  scalar :time do
-    parse(&Timex.parse(&1.value, "{ISO:Extended}"))
-    serialize(&Timex.format!(&1, "{ISO:Extended}"))
-  end
-
-  @desc """
-  Unix timestamp (in milliseconds).
-  """
-  scalar :timestamp do
-    parse(&Timex.from_unix(&1.value, :millisecond))
-
-    serialize(fn time ->
-      DateTime.to_unix(Timex.to_datetime(time), :millisecond)
-    end)
   end
 
   def key(k) do

@@ -1,4 +1,5 @@
-defmodule SapienNotifierWeb.NotificationChannel do
+defmodule NotifierWeb.NotificationChannel do
+  @moduledoc false
   use Phoenix.Channel
 
   require Logger

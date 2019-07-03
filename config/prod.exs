@@ -4,7 +4,7 @@ use Mix.Config
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
 # Configures the endpoint
-config :sapien_notifier, SapienNotifierWeb.Endpoint,
+config :notifier, NotifierWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [host: System.get_env("HOST")],
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
@@ -17,14 +17,14 @@ config :sapien_notifier, SapienNotifierWeb.Endpoint,
 config :logger, level: :info
 
 # Configure your database
-config :sapien_notifier, SapienNotifier.Repo,
+config :notifier, Notifier.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "18"),
   ssl: false
 
 # Configures Guardian
-config :sapien_notifier, SapienNotifierWeb.Guardian,
+config :notifier, NotifierWeb.Guardian,
   issuer: "sapien",
   allowed_algos: ["ES256"],
   secret_key: System.get_env("GUARDIAN_SECRET_KEY")
@@ -34,7 +34,7 @@ config :sapien_notifier, SapienNotifierWeb.Guardian,
 # To get SSL working, you will need to add the `https` key
 # to the previous section and set your `:url` port to 443:
 #
-#     config :sapien_notifier, SapienNotifierWeb.Endpoint,
+#     config :notifier, NotifierWeb.Endpoint,
 #       ...
 #       url: [host: "example.com", port: 443],
 #       https: [
@@ -58,7 +58,7 @@ config :sapien_notifier, SapienNotifierWeb.Guardian,
 # We also recommend setting `force_ssl` in your endpoint, ensuring
 # no data is ever sent via http, always redirecting to https:
 #
-#     config :sapien_notifier, SapienNotifierWeb.Endpoint,
+#     config :notifier, NotifierWeb.Endpoint,
 #       force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
@@ -73,7 +73,7 @@ config :sapien_notifier, SapienNotifierWeb.Guardian,
 # Alternatively, you can configure exactly which server to
 # start per endpoint:
 #
-#     config :sapien_notifier, SapienNotifierWeb.Endpoint, server: true
+#     config :notifier, NotifierWeb.Endpoint, server: true
 #
 # Note you can't rely on `System.get_env/1` when using releases.
 # See the releases documentation accordingly.

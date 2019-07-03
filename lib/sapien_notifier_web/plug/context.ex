@@ -1,4 +1,4 @@
-defmodule SapienNotifierWeb.Context do
+defmodule NotifierWeb.Context do
   @behaviour Plug
   import Plug.Conn
   require Logger
@@ -24,8 +24,8 @@ defmodule SapienNotifierWeb.Context do
   end
   # @TODO: for later once add jwt to mutations and query
   # defp authorize(token) do
-  #   case SapienNotifierWeb.Guardian.decode_and_verify(token) do
-  #     {:ok, claims} -> SapienNotifierWeb.Guardian.resource_from_claims(claims)
+  #   case NotifierWeb.Guardian.decode_and_verify(token) do
+  #     {:ok, claims} -> NotifierWeb.Guardian.resource_from_claims(claims)
   #     {:error, reason} -> {:error, reason}
   #     nil -> {:error, "Unauthorized"}
   #   end

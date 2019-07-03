@@ -2,7 +2,7 @@ use Mix.Config
 
 # # Configures the endpoint For development, we disable any cache and enable
 # debugging and code reloading.
-config :sapien_notifier, SapienNotifierWeb.Endpoint,
+config :notifier, NotifierWeb.Endpoint,
   http: [port: 9000],
   debug_errors: true,
   code_reloader: true,
@@ -20,11 +20,11 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
-config :sapien_notifier, SapienNotifier.Repo,
+config :notifier, Notifier.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "sapien_notifier_dev",
+  database: "notifier_dev",
   hostname: System.get_env("PG_HOST") || "localhost",
   pool_size: 40,
   log_level: :info

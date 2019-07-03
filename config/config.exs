@@ -7,16 +7,16 @@
 # General application configuration
 use Mix.Config
 
-config :sapien_notifier,
-  ecto_repos: [SapienNotifier.Repo],
+config :notifier,
+  ecto_repos: [Notifier.Repo],
   migration_timestamps: [type: :utc_datetime_usec]
 
 # Configures the endpoint
-config :sapien_notifier, SapienNotifierWeb.Endpoint,
+config :notifier, NotifierWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "qmJil2X0yjWLCQ4n2uJwj+tpsOgioCtNWTSUlUYoS0DI72yp+JTLgClV+LI0QBSo",
-  render_errors: [view: SapienNotifierWeb.ErrorView, accepts: ~w(json)],
-  pubsub: [name: SapienNotifier.PubSub, adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: NotifierWeb.ErrorView, accepts: ~w(json)],
+  pubsub: [name: Notifier.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -24,7 +24,7 @@ config :logger, :console,
   metadata: [:request_id]
 
 # Configures Guardian
-config :sapien_notifier, SapienNotifierWeb.Guardian,
+config :notifier, NotifierWeb.Guardian,
   issuer: "sapien",
   allowed_algos: ["ES256"],
   secret_key: "hvUNfqlSpsPsg1S8XElJMmXmYhCkelxox26OteggVzfEGk5LXdiv7QR9RPTyFSES"
@@ -33,7 +33,7 @@ config :sapien_notifier, SapienNotifierWeb.Guardian,
 config :phoenix, :json_library, Jason
 
 # Configure migrations to use UUIDs
-config :sapien_notifier, :generators,
+config :notifier, :generators,
   migration: true,
   binary_id: true,
   sample_binary_id: "11111111-1111-1111-1111-111111111111"

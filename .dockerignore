@@ -9,6 +9,7 @@ docker-compose.yml
 /.fetch
 erl_crash.dump
 sapien_notifier-*.tar
+notifier-*.tar
 /priv/static/
 /config/*.secret.exs
 .env

@@ -1,4 +1,4 @@
-defmodule SapienNotifierWeb.BodyReader do
+defmodule NotifierWeb.BodyReader do
   def read_body(conn, opts) do
     {:ok, body, conn} = Plug.Conn.read_body(conn, opts)
     body = [body | conn.private[:raw_body] || []]

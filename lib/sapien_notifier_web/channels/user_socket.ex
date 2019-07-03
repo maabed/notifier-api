@@ -1,9 +1,9 @@
-defmodule SapienNotifierWeb.UserSocket do
+defmodule NotifierWeb.UserSocket do
   use Phoenix.Socket
-  use Absinthe.Phoenix.Socket, schema: SapienNotifierWeb.Schema
+  use Absinthe.Phoenix.Socket, schema: NotifierWeb.Schema
 
   ## Channels
-  channel "notification:*", SapienNotifierWeb.NotificationChannel
+  channel "notification:*", NotifierWeb.NotificationChannel
 
   def connect(params, socket) do
     context = build_context(params)
@@ -24,8 +24,8 @@ defmodule SapienNotifierWeb.UserSocket do
   end
 
   defp authorize(token) do
-    case SapienNotifierWeb.Guardian.decode_and_verify(token, %{}, secret: {SapienNotifierWeb.Guardian, :fetch_secret, []}, allowed_algos: ["ES256"]) do
-      {:ok, claims} -> SapienNotifierWeb.Guardian.resource_from_claims(claims)
+    case NotifierWeb.Guardian.decode_and_verify(token, %{}, secret: {NotifierWeb.Guardian, :fetch_secret, []}, allowed_algos: ["ES256"]) do
+      {:ok, claims} -> NotifierWeb.Guardian.resource_from_claims(claims)
       {:error, reason} -> {:error, reason}
       nil -> {:error, "Unauthorized"}
     end

@@ -1,11 +1,14 @@
-defmodule SapienNotifier.MixProject do
+defmodule Notifier.MixProject do
+  @moduledoc """
+  mix file
+  """
   use Mix.Project
 
   @elixir_version "~> 1.8"
 
   def project do
     [
-      app: :sapien_notifier,
+      app: :notifier,
       version: "0.1.0",
       elixir: @elixir_version,
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -22,7 +25,7 @@ defmodule SapienNotifier.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {SapienNotifier.Application, []},
+      mod: {Notifier.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -51,7 +54,7 @@ defmodule SapienNotifier.MixProject do
       {:guardian, "~> 1.1.1", git: "https://github.com/ueberauth/guardian.git"},
       {:poison, "~> 3.1"},
       {:faker, "~> 0.11.2", only: [:dev, :test]},
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
+      {:credo, "~>  1.1", only: [:dev, :test], runtime: false},
       {:timex, "~> 3.1"},
       {:tzdata, "~> 1.0.0", override: true},
       {:distillery, "~> 2.0"}
