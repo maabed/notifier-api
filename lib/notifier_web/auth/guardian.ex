@@ -2,7 +2,6 @@ defmodule NotifierWeb.Guardian do
   @moduledoc false
 
   use Guardian, otp_app: :Notifier
-  require Logger
 
   def current_user(conn) do
     NotifierWeb.Guardian.Plug.current_resource(conn["user"]["_id"])
@@ -21,7 +20,6 @@ defmodule NotifierWeb.Guardian do
   end
 
   def resource_from_claims(claims) do
-    # Logger.info "Claims on resource_from_claims: #{inspect claims}"
     {:ok, claims["user"]["_id"]}
   end
 

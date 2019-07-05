@@ -26,20 +26,20 @@ defmodule NotifierWeb.Resolvers.Notifications do
     {:ok, Notifications.get_notification!(id)}
   end
 
-  def update_status(_, %{id: id, status: status}, %{context: %{current_user: current_user}}) do
-    with {:ok, true} <- Notifications.update_status(id, current_user, status) do
+  def update_status(_, %{id: id, status: status}, %{context: %{user_id: user_id}}) do
+    with {:ok, true} <- Notifications.update_status(id, user_id, status) do
       {:ok, true}
     end
   end
 
-  def mark_as_read(_, %{id: id}, %{context: %{current_user: current_user}}) do
-    with {:ok, true} <- Notifications.mark_as_read(id, current_user) do
+  def mark_as_read(_, %{id: id}, %{context: %{user_id: user_id}}) do
+    with {:ok, true} <- Notifications.mark_as_read(id, user_id) do
       {:ok, true}
     end
   end
 
-  def mark_all_as_read(_, _, %{context: %{current_user: current_user}}) do
-    with {:ok, true} <- Notifications.mark_all_as_read(current_user) do
+  def mark_all_as_read(_, _, %{context: %{user_id: user_id}}) do
+    with {:ok, true} <- Notifications.mark_all_as_read(user_id) do
       {:ok, true}
     end
   end

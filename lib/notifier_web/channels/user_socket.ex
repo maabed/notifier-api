@@ -3,7 +3,8 @@ defmodule NotifierWeb.UserSocket do
   use Absinthe.Phoenix.Socket, schema: NotifierWeb.Schema
 
   ## Channels
-  channel "notification:*", NotifierWeb.NotificationChannel
+  # channel "notification:*", NotifierWeb.NotificationChannel
+  # channel "unseen:*", NotifierWeb.UnseenChannel
 
   def connect(params, socket) do
     context = build_context(params)
@@ -13,8 +14,7 @@ defmodule NotifierWeb.UserSocket do
 
   defp build_context(params) do
     with "Bearer " <> token <- Map.get(params, "authorization"),
-      {:ok, current_user} <- authorize(token) do
-        %{current_user: current_user}
+      {:ok, user_id} <- authorize(token) do %{user_id: user_id}
     else
       nil ->
         {:error, "Unauthorized"}

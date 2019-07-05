@@ -9,10 +9,10 @@ defmodule NotifierWeb.NotificationChannel do
     {:ok, socket}
   end
 
-  def join("notification:" <> user_id, _params, socket) do
-    current_user = Guardian.Phoenix.Socket.current_resource(socket)
-    Logger.info "NotificationChannel user_id: #{inspect user_id}"
-    if current_user do
+  def join("notification:" <> current_user, _params, socket) do
+    user_id = Guardian.Phoenix.Socket.current_resource(socket)
+    Logger.info "NotificationChannel user_id: #{inspect current_user}"
+    if user_id do
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
