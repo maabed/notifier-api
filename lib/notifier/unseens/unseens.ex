@@ -17,28 +17,52 @@ defmodule Notifier.Unseens do
     end
   end
 
-  def get_unseen(%{user_id: user_id, tribe_id: tribe_id}) do
-    Repo.get_by(Unseen, user_id: user_id, tribe_id: tribe_id)
+  def get_unseen(%{user_id: user_id, tribe_ids: tribe_ids}) do
+    query = from u in Unseen,
+      where: u.tribe_id in ^tribe_ids and u.user_id == ^user_id
+
+    Repo.all(query)
   end
 
-  def update_unseen(params) do
-    Logger.info "update_unseen params: #{inspect params}"
-    if params.count > 0 do
-      params
-      |> get()
-      |> build_unseen(params)
-      |> Unseen.changeset(params)
-      |> Repo.insert_or_update()
-    else
-      {:error, "count must be greater than 0"}
+  def update_unseen(%{receivers: receivers, tribe_id: tribe_id}) do
+    receivers
+    |> Enum.map(&String.trim/1)
+    |> Enum.reject(& &1 == "")
+    |> Enum.map(fn r -> find_insert_unseen(r, tribe_id) end)
+    |> update_all_unseen(receivers, tribe_id)
+  end
+
+  defp find_insert_unseen(r, tribe_id) do
+    attrs = %{tribe_id: tribe_id, user_id: r}
+    attrs
+    |> get()
+    |> build_unseen(attrs)
+  end
+
+  defp build_unseen({:ok, _unseen}, _), do: {:ok, nil}
+  defp build_unseen({:error, :not_found}, attrs) do
+    %Unseen{}
+    |> Unseen.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_all_unseen(_, receivers, tribe_id) do
+    now = NaiveDateTime.utc_now()
+    result =
+      from(u in Unseen,
+      where: u.user_id in ^receivers and u.tribe_id == ^tribe_id,
+      update: [inc: [unseen_count: ^1], set: [updated_at: ^now]],
+      select: %{
+        user_id: u.user_id,
+        tribe_id: u.tribe_id,
+        unseen_count: u.unseen_count,
+      })
+    |> Repo.update_all([])
+
+    case result do
+      {0, error} -> {:error, error}
+      {_count, unseens} -> {:ok, unseens}
     end
-  end
-
-  defp build_unseen({:ok, unseen}, _), do: unseen
-
-  defp build_unseen({:error, :not_found},
-    %{user_id: user_id, tribe_id: tribe_id, count: count}) do
-    %Unseen{user_id: user_id, tribe_id: tribe_id, count: count}
   end
 
   def mark_as_seen(%{user_id: user_id, tribe_id: tribe_id}) do
@@ -52,7 +76,7 @@ defmodule Notifier.Unseens do
         |> Repo.delete()
         {:ok, true}
 
-      nil -> {:error, :not_found}
+      nil -> {:ok, nil}
     end
   end
 end

@@ -51,8 +51,8 @@ defmodule NotifierWeb.Schema do
     end
 
     @desc "Get unseen"
-    field :get_unseen, :unseen do
-      arg :tribe_id, non_null(:id)
+    field :get_unseen, list_of :unseen do
+      arg :tribe_ids, list_of(non_null(:id))
       resolve &Resolvers.Unseens.get_unseen/3
     end
   end
@@ -89,10 +89,9 @@ defmodule NotifierWeb.Schema do
     end
 
     @desc "update unseen"
-    field :update_unseen, :unseen do
-      arg :user_id, non_null(:id)
+    field :update_unseen, :boolean do
+      arg :receivers, list_of(non_null(:string))
       arg :tribe_id, non_null(:id)
-      arg :count, non_null(:integer)
       resolve &Resolvers.Unseens.update_unseen/3
     end
 
@@ -106,19 +105,23 @@ defmodule NotifierWeb.Schema do
   subscription do
     @desc "When notification created"
     field :notification_added, :notification do
-      arg :user_id, non_null(:id)
-
-      config fn args, _info ->
-        {:ok, topic: args.user_id}
+      config fn _, %{context: context} ->
+        if user_id = context[:user_id] do
+          {:ok, topic: user_id}
+        else
+          {:ok, topic: []}
+        end
       end
     end
 
-    @desc "When unseen record updated"
+    @desc "When unseen records updated"
     field :unseen_updated, :unseen do
-      arg :user_id, non_null(:id)
-
-      config fn args, _info ->
-        {:ok, topic: args.user_id}
+      config fn _, %{context: context} ->
+        if user_id = context[:user_id] do
+          {:ok, topic: user_id}
+        else
+          {:ok, topic: []}
+        end
       end
     end
   end
