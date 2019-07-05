@@ -10,7 +10,7 @@ defmodule NotifierWeb.Type.Unseens do
     field :id, non_null(:id)
     field :user_id, non_null(:string)
     field :tribe_id, non_null(:boolean)
-    field :count, non_null(:integer)
+    field :unseen_count, non_null(:integer)
     field :inserted_at, :time
   end
 end

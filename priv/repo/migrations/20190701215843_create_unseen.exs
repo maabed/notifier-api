@@ -9,7 +9,7 @@ defmodule Notifier.Repo.Migrations.CreateUnseen do
       add :id, :binary_id, primary_key: true
       add :user_id, :string
       add :tribe_id, :string
-      add :count, :integer, default: 0
+      add :unseen_count, :integer, default: 0
 
       timestamps(type: :utc_datetime_usec)
     end

@@ -12,7 +12,7 @@ defmodule Notifier.Unseen do
   schema "unseens" do
     field :user_id, :string
     field :tribe_id, :string, read_after_writes: true
-    field :count, :integer, default: 0, read_after_writes: true
+    field :unseen_count, :integer, default: 0, read_after_writes: true
 
     timestamps(type: :utc_datetime_usec)
   end
@@ -20,7 +20,7 @@ defmodule Notifier.Unseen do
   @doc false
   def changeset(unseen, attrs) do
     unseen
-    |> cast(attrs, [:user_id, :tribe_id, :count])
-    |> validate_required([:user_id, :tribe_id, :count])
+    |> cast(attrs, [:user_id, :tribe_id, :unseen_count])
+    |> validate_required([:user_id, :tribe_id, :unseen_count])
   end
 end
