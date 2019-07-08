@@ -11,7 +11,7 @@ To start notification server:
 * Create `.env` file and add `JWT_PUBLIC_KEY` value from 1password
 * Install dependencies with `mix deps.get`
 * Create and migrate your database with `mix ecto.setup`
-* Start Phoenix endpoint with `mix phx.server`
+* Start Phoenix endpoint with `source .env && mix phx.server`
 
 Graphql endpoint at [`localhost:9000/api/graphql`](http://localhost:9000/api/graphql)
 GraphiQL playground at [`localhost:9000/api/graphiql`](http://localhost:9000/api/graphiql)
