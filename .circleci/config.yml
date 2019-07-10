@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:8.12.0
+      - image: circleci/node:10.16
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -32,11 +32,11 @@ jobs:
             echo 'export PG_USER_VALUE="${PG_USER}"' >> $BASH_ENV
             echo 'export PGPASSWORD_VALUE="${PGPASSWORD}"' >> $BASH_ENV
       - run:
-          name: Build application Docker image
+          name: Build notifier Docker image
           command: |
             docker build -t $FULL_IMAGE_NAME .
       - run:
-          name: Test image
+          name: Test notifier image
           command: |
             docker-compose -f .circleci/docker-compose.yml up -d
             sleep 10
@@ -45,7 +45,7 @@ jobs:
             docker logs local-notifier
             docker run --network container:local-notifier appropriate/curl -sSLI --retry 10 --retry-connrefused http://$LOCAL_NOTIFIER_IP:$PORT_VALUE/api/health
       - run:
-          name: Save image to an archive
+          name: Save notifier image to an archive
           command: |
             mkdir docker-image
             docker save -o docker-image/image.tar $FULL_IMAGE_NAME
@@ -85,7 +85,7 @@ jobs:
           name: Setup common environment variables
           command: |
             if [ "${CIRCLE_BRANCH}" == "development" ]; then
-              echo 'export AWS_ENVIRONMENT="stg"' >> $BASH_ENV
+              echo 'export AWS_ENVIRONMENT="dev"' >> $BASH_ENV
             elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
               echo 'export AWS_ENVIRONMENT="stg"' >> $BASH_ENV
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
@@ -102,7 +102,7 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "development" ]; then
               docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME:latest
               MANIFEST=$(aws ecr batch-get-image --repository-name $ECR_REPOSITORY_NAME --image-ids imageTag=latest --query 'images[].imageManifest' --output text)
-              aws ecr put-image --repository-name $ECR_REPOSITORY_NAME --image-tag STG --image-manifest "$MANIFEST"
+              aws ecr put-image --repository-name $ECR_REPOSITORY_NAME --image-tag DEV --image-manifest "$MANIFEST"
               aws ecr put-image --repository-name $ECR_REPOSITORY_NAME --image-tag ${CIRCLE_SHA1} --image-manifest "$MANIFEST"
             elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
               MANIFEST=$(aws ecr batch-get-image --repository-name $ECR_REPOSITORY_NAME --image-ids imageTag=DEV --query 'images[].imageManifest' --output text)
@@ -112,7 +112,7 @@ jobs:
               aws ecr put-image --repository-name $ECR_REPOSITORY_NAME --image-tag PRD --image-manifest "$MANIFEST"
             fi
       - run:
-          name: Deploy
+          name: Update the notifier ECS Service with the latest Task Definition and Docker image
           command: |
             . venv/bin/activate
             export ECS_TASK_FAMILY_NAME="${AWS_RESOURCE_NAME_PREFIX}-${AWS_ENVIRONMENT}-fargate-td"
