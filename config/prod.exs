@@ -14,7 +14,8 @@ config :sapien_notifier, SapienNotifierWeb.Endpoint,
   watchers: []
 
 # Do not print debug messages in production
-config :logger, level: :info
+# config :logger, level: :info
+config :logger, :console, format: "[$level] $message\n"
 
 # Configure your database
 config :sapien_notifier, SapienNotifier.Repo,
