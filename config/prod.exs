@@ -14,14 +14,10 @@ config :sapien_notifier, SapienNotifierWeb.Endpoint,
   watchers: []
 
 # Do not print debug messages in production
-# config :logger, level: :info
-config :logger, :console, format: "[$level] $message\n"
+config :logger, level: :info
 
 config :absinthe,
-  log: true
-
-config :absinthe, Absinthe.Logger,
-  pipeline: true
+  log: System.get_env("GRAPHQL_LOG") == "1"
 
 # Configure your database
 config :sapien_notifier, SapienNotifier.Repo,
