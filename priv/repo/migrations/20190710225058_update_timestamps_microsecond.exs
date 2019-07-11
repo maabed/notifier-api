@@ -20,10 +20,9 @@ defmodule SapienNotifier.Repo.Migrations.UpdateTimestampsMicrosecond do
 
     Repo.all(Notification)
     |> Enum.map(fn n ->
-      Logger.debug "inserted_at BEFORE: #{inspect DateTime.to_string n.inserted_at}"
       ts = n.inserted_at |> get_microsecond()
 
-      Logger.debug "inserted_at AFTER: #{inspect DateTime.to_string ts}"
+      Logger.info "inserted_at AFTER: #{inspect DateTime.to_string ts}"
       case n do
         %Notification{} = n ->
           n
