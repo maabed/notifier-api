@@ -16,12 +16,16 @@ config :sapien_notifier, SapienNotifierWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :absinthe,
+  log: System.get_env("GRAPHQL_LOG") == "1"
+
 # Configure your database
 config :sapien_notifier, SapienNotifier.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "18"),
-  ssl: false
+  ssl: false,
+  log_level: :info
 
 # Configures Guardian
 config :sapien_notifier, SapienNotifierWeb.Guardian,

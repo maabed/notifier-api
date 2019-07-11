@@ -9,6 +9,7 @@ defmodule SapienNotifier.Notifier.Notification do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
+  @timestamps_opts [type: :utc_datetime_usec]
   schema "notifications" do
     field :sender_id, :string
     field :sender_name, :string
@@ -25,7 +26,7 @@ defmodule SapienNotifier.Notifier.Notification do
     # holds notification status for specific user_id when loaded via a join
     field :status, :string, virtual: true
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :utc_datetime_usec)
   end
 
   @doc false
@@ -33,5 +34,12 @@ defmodule SapienNotifier.Notifier.Notification do
     notification
     |> cast(attrs, [:sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload])
     |> validate_required([:sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload])
+  end
+
+  def update_inserted_at_changeset(notification, attrs \\ %{}) do
+    notification
+    |> cast(attrs, [:inserted_at])
+    |> put_change(:inserted_at, attrs.inserted_at)
+    |> validate_required([:inserted_at])
   end
 end
