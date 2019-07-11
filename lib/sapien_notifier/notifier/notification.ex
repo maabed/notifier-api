@@ -35,4 +35,11 @@ defmodule SapienNotifier.Notifier.Notification do
     |> cast(attrs, [:sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload])
     |> validate_required([:sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload])
   end
+
+  def update_inserted_at_changeset(notification, attrs \\ %{}) do
+    notification
+    |> cast(attrs, [:inserted_at])
+    |> put_change(:inserted_at, attrs.inserted_at)
+    |> validate_required([:inserted_at])
+  end
 end
