@@ -56,7 +56,7 @@ defmodule Notifier.MixProject do
       {:faker, "~> 0.11.2", only: [:dev, :test]},
       {:credo, "~>  1.1", only: [:dev, :test], runtime: false},
       {:timex, "~> 3.1"},
-      {:tzdata, "~> 1.0.0", override: true},
+      {:tzdata, "~> 1.0.1", override: true},
       {:distillery, "~> 2.0"}
     ]
   end
