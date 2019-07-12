@@ -1,4 +1,4 @@
-defmodule SapienNotifierWeb.ChannelCase do
+defmodule NotifierWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule SapienNotifierWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint SapienNotifierWeb.Endpoint
+      @endpoint NotifierWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(SapienNotifier.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Notifier.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(SapienNotifier.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Notifier.Repo, {:shared, self()})
     end
 
     :ok

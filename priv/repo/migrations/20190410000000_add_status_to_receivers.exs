@@ -1,4 +1,4 @@
-defmodule Notifier.Repo.Migrations.CreateReceivers do
+defmodule Notifier.Repo.Migrations.AddStatusToReceivers do
   use Ecto.Migration
 
   def change do

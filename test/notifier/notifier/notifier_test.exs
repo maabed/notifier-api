@@ -1,10 +1,10 @@
-defmodule SapienNotifier.NotifierTest do
-  use SapienNotifier.DataCase
+defmodule Notifier.NotifierTest do
+  use Notifier.DataCase
 
-  alias SapienNotifier.Notifier
+  alias Notifier
 
   describe "notifications" do
-    alias SapienNotifier.Notifier.Notification
+    alias Notifier.Notification
 
     @valid_attrs %{
       action: "some action",

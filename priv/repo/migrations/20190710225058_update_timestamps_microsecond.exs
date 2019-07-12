@@ -1,9 +1,9 @@
-defmodule SapienNotifier.Repo.Migrations.UpdateTimestampsMicrosecond do
+defmodule Notifier.Repo.Migrations.UpdateTimestampsMicrosecond do
   use Ecto.Migration
   require Logger
 
-  alias SapienNotifier.Repo
-  alias SapienNotifier.Notifier.Notification
+  alias Notifier.Repo
+  alias Notifier.Notification
 
   def change do
     alter table(:notifications) do

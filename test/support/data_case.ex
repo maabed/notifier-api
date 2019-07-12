@@ -1,4 +1,4 @@
-defmodule SapienNotifier.DataCase do
+defmodule Notifier.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule SapienNotifier.DataCase do
 
   using do
     quote do
-      alias SapienNotifier.Repo
+      alias Notifier.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import SapienNotifier.DataCase
+      import Notifier.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(SapienNotifier.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Notifier.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(SapienNotifier.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Notifier.Repo, {:shared, self()})
     end
 
     :ok
