@@ -22,7 +22,9 @@ defmodule Notifier.Notifications do
   def get_user_notifications(user_id, limit, offset) do
     Repo.all from n in Notification,
       join: r in assoc(n, :receivers),
-      where: r.user_id == ^user_id,
+      on: r.user_id == ^user_id,
+      where: n.id == r.notification_id,
+      distinct: r.notification_id,
       select: %{n | read: r.read, status: r.status },
       limit: ^limit,
       offset: ^offset,
@@ -31,17 +33,15 @@ defmodule Notifier.Notifications do
   end
 
   def get_user_unread_notifications_count(user_id) do
-    Repo.one from from n in Notification,
-      join: r in assoc(n, :receivers),
+    Repo.one from from r in Receiver,
       where: r.user_id == ^user_id and r.read == false,
-      select: count(r.id)
+      select: count(r.notification_id, :distinct)
   end
 
   def get_user_notifications_count(user_id) do
-    Repo.one from from n in Notification,
-      join: r in assoc(n, :receivers),
+    Repo.one from from r in Receiver,
       where: r.user_id == ^user_id,
-      select: count(r.id)
+      select: count(r.notification_id, :distinct)
   end
 
   def create_notification(params \\ %{}) do
@@ -62,6 +62,7 @@ defmodule Notifier.Notifications do
     receivers
     |> Enum.map(&String.trim/1)
     |> Enum.reject(& &1 == "")
+    |> Enum.uniq()
     |> Enum.map(fn receiver ->
       params_with_relation = %{
         notification_id: notification_id,
