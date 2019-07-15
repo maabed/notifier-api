@@ -12,7 +12,7 @@ defmodule Notifier.Unseen do
   schema "unseens" do
     field :user_id, :string
     field :tribe_id, :string, read_after_writes: true
-    field :unseen_count, :integer, default: 0, read_after_writes: true
+    field :unseen_count, :integer, default: 1, read_after_writes: true
 
     timestamps(type: :utc_datetime_usec)
   end
