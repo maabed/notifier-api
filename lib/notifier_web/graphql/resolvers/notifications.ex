@@ -58,7 +58,9 @@ defmodule NotifierWeb.Resolvers.Notifications do
         payload: notification.payload
       }
 
-      Enum.each(args.receivers, fn user_id ->
+      args.receivers
+      |> Enum.uniq()
+      |> Enum.each(fn user_id ->
         Absinthe.Subscription.publish(NotifierWeb.Endpoint, data, notification_added: user_id)
       end)
 
