@@ -30,4 +30,4 @@ config :notifier, Notifier.Repo,
   database: "notifier_dev",
   hostname: System.get_env("PG_HOST") || "localhost",
   pool_size: 40,
-  log: :info
+  log: System.get_env("SQL_LOG") == "1"
