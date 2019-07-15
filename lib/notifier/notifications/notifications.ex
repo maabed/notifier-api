@@ -73,7 +73,9 @@ defmodule Notifier.Notifications do
 
       %Receiver{}
       |> Receiver.changeset(params_with_relation)
-      |> Repo.insert()
+      |> Repo.insert(
+        on_conflict: {:replace, [:status, :updated_at]},
+        conflict_target: [:notification_id, :user_id])
     end)
   end
 
