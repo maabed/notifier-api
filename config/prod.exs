@@ -25,7 +25,7 @@ config :notifier, Notifier.Repo,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "18"),
   ssl: false,
-  log_level: :info
+  log: System.get_env("SQL_LOG") == "1"
 
 # Configures Guardian
 config :notifier, NotifierWeb.Guardian,
