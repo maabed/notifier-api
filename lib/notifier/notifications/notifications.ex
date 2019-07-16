@@ -24,7 +24,6 @@ defmodule Notifier.Notifications do
       join: r in assoc(n, :receivers),
       on: r.user_id == ^user_id,
       where: n.id == r.notification_id,
-      distinct: r.notification_id,
       select: %{n | read: r.read, status: r.status },
       limit: ^limit,
       offset: ^offset,
