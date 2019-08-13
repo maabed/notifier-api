@@ -80,6 +80,13 @@ defmodule SapienNotifierWeb.Schema do
       arg :status, :string
       resolve &Resolvers.Notifications.update_status/3
     end
+
+    @desc "delete notification receivers"
+    field :delete_receivers, :boolean do
+      arg :id, non_null(:id)
+      arg :receivers, list_of(non_null(:string))
+      resolve &Resolvers.Notifications.delete_receivers/3
+    end
   end
 
   subscription do

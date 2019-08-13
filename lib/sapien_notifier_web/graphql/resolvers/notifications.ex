@@ -2,6 +2,8 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   @moduledoc """
   Notifications resolvers
   """
+  require Logger
+
   alias SapienNotifier.Notifier
   @defaults_pagination %{limit: 10, offset: 0}
 
@@ -45,6 +47,7 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   end
 
   def create_notification(_, args, _) do
+    Logger.info "args: #{inspect args}"
     with {:ok, notification} <- Notifier.create_notification(args) do
       data = %{
         id: notification.id,
@@ -63,6 +66,13 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
       end)
 
       {:ok, data}
+    end
+  end
+
+  #TODO: check that current_user is sender
+  def delete_receivers(_, %{id: id, receivers: receivers}, %{context: %{current_user: current_user}}) do
+    with {:ok, true} <- Notifier.delete_receivers(id, receivers) do
+      {:ok, true}
     end
   end
 end
