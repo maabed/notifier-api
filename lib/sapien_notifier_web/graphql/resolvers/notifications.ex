@@ -2,8 +2,6 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   @moduledoc """
   Notifications resolvers
   """
-  require Logger
-
   alias SapienNotifier.Notifier
   @defaults_pagination %{limit: 10, offset: 0}
 
@@ -47,7 +45,6 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   end
 
   def create_notification(_, args, _) do
-    Logger.info "args: #{inspect args}"
     with {:ok, notification} <- Notifier.create_notification(args) do
       data = %{
         id: notification.id,
