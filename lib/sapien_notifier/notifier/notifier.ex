@@ -125,4 +125,13 @@ defmodule SapienNotifier.Notifier do
   def change_notification(%Notification{} = notification) do
     Notification.changeset(notification, %{})
   end
+
+  def delete_receivers(id, user_ids) do
+    query =
+      from r in Receiver,
+        where: r.notification_id == ^id and r.user_id in ^user_ids
+
+    Repo.delete_all(query)
+    {:ok, true}
+  end
 end

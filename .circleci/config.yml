@@ -152,10 +152,11 @@ workflows:
             branches:
               only:
                 - development
-  deploy-staging:
+  deploy-staging-master:
     jobs:
       - deploy:
           filters:
             branches:
               only:
                 - staging
+                - master
