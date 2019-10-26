@@ -11,6 +11,7 @@ defmodule SapienNotifier.Application do
     children = [
       # Start the Ecto repository
       supervisor(SapienNotifier.Repo, []),
+      supervisor(SapienNotifier.SapienRepo, []),
       # Start the endpoint when the application starts
       supervisor(SapienNotifierWeb.Endpoint, []),
       supervisor(Absinthe.Subscription, [SapienNotifierWeb.Endpoint])
