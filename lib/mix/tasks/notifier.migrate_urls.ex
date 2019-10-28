@@ -139,13 +139,18 @@ defmodule Mix.Tasks.Notifier.MigrateUrls do
   defp format_url(username, title, short_id) do
     username =
       username
+      |> String.downcase()
       |> String.replace(~r/\s+/, "-")
 
     post_url =
       title
-      |> String.replace(" ", "-")
-      |> String.replace(~r/[^a-zA-Z0-9-_ ]/, "")
-      |> String.slice(0..30)
+      |> String.downcase()
+      |> String.replace(~r/\s+/, "-")
+      |> String.replace(~r/[^A-Za-z0-9\-]/, "")
+      |> String.replace(~r/\-\-+/, "-")
+      |> String.replace(~r/^-+/, "")
+      |> String.slice(0, 30)
+      |> String.replace(~r/-+$/, "")
       |> Kernel.<>("-#{short_id}")
 
     "/@#{username}/#{post_url}"
