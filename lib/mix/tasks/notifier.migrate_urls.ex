@@ -59,9 +59,9 @@ defmodule Mix.Tasks.Notifier.MigrateUrls do
 
   defp update_payload(id, post_id, username, payload) when not is_nil(post_id) do
     case post_query(post_id) do
-      %{"title" => title, "short_id" => short_id, "orignal_id" => orignal_id} ->
+      %{"title" => title, "short_id" => short_id, "orignal_id" => orignal_id, "tribe_name" => tribe_name} ->
         if orignal_id == post_id do
-          url = format_url(username, title, short_id)
+          url = format_url(tribe_name, username, title, short_id)
           payload = Map.put(payload, "url", url)
 
           perform_update(id, payload)
@@ -89,9 +89,15 @@ defmodule Mix.Tasks.Notifier.MigrateUrls do
 
   defp post_query(post_id) do
     query = """
-      SELECT title, p."shortId" AS short_id, _id AS orignal_id
+      SELECT
+        p._id AS orignal_id,
+        p.title,
+        p.tribe_id,
+        p."shortId" AS short_id,
+        t.name AS tribe_name
       FROM posts AS p
-      WHERE _id = '#{post_id}'
+      LEFT JOIN tribes AS t ON t._id = p.tribe_id
+      WHERE p._id = '#{post_id}'
     """
     execute_query(query)
   end
@@ -136,7 +142,7 @@ defmodule Mix.Tasks.Notifier.MigrateUrls do
     end
   end
 
-  defp format_url(username, title, short_id) do
+  defp format_url(tribe_name, username, title, short_id) do
     username =
       username
       |> String.downcase()
@@ -153,7 +159,7 @@ defmodule Mix.Tasks.Notifier.MigrateUrls do
       |> String.replace(~r/-+$/, "")
       |> Kernel.<>("-#{short_id}")
 
-    "/@#{username}/#{post_url}"
+    "/t/#{tribe_name}/@#{username}/#{post_url}"
   end
 
   defp format_url(tribe_name) do
