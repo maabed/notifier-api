@@ -30,4 +30,16 @@ config :sapien_notifier, SapienNotifier.Repo,
   database: "sapien_notifier_dev",
   hostname: System.get_env("PG_HOST") || "localhost",
   pool_size: 40,
-  log_level: :info
+  log_level: :info,
+  show_sensitive_data_on_connection_error: true
+
+# sapien database
+config :sapien_notifier, SapienNotifier.SapienRepo,
+  username: "sapien",
+  password: "sapien",
+  database: "sapien",
+  hostname: "localhost",
+  pool_size: 5,
+  timeout: 90_000,
+  log_level: :info,
+  show_sensitive_data_on_connection_error: true

@@ -25,7 +25,16 @@ config :sapien_notifier, SapienNotifier.Repo,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "18"),
   ssl: false,
-  log_level: :info
+  log_level: :info,
+  show_sensitive_data_on_connection_error: true
+
+config :sapien_notifier, SapienNotifier.SapienRepo,
+  adapter: Ecto.Adapters.Postgres,
+  url: System.get_env("SAPIEN_DATABASE_URL"),
+  pool_size: String.to_integer(System.get_env("SAPIEN_POOL_SIZE") || "10"),
+  ssl: false,
+  timeout: 90_000,
+  show_sensitive_data_on_connection_error: true
 
 # Configures Guardian
 config :sapien_notifier, SapienNotifierWeb.Guardian,
