@@ -1,9 +1,7 @@
-defmodule Mix.Tasks.Notifier.MigrateUrls do
+defmodule SapienNotifier.Repo.Migrations.UpdatePostUrl do
   @moduledoc false
 
-  @shortdoc "Migrate notifications urls"
-
-  use Mix.Task
+  use Ecto.Migration
   import Ecto.Query, warn: false
   require Logger
 
@@ -11,14 +9,12 @@ defmodule Mix.Tasks.Notifier.MigrateUrls do
   alias SapienNotifier.{Repo, SapienRepo}
   alias Ecto.Adapters.SQL
 
-  @doc false
-  def run(_) do
-    Mix.Task.run("app.start")
-
+  def change do
+    SapienRepo.start_link()
     migrate_url()
   end
 
-  def migrate_url do
+  defp migrate_url do
     query =
       from n in Notification,
         where: not is_nil(n.payload),
