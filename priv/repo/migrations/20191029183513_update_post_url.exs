@@ -59,7 +59,7 @@ defmodule SapienNotifier.Repo.Migrations.UpdatePostUrl do
         if orignal_id == post_id do
           url = format_url(tribe_name, username, title, short_id)
           payload = Map.put(payload, "url", url)
-
+          Logger.info "Found Post N post_id : #{inspect post_id}"
           perform_update(id, payload)
         else
           Logger.warn "Invalid payload [post_id]: notifier db => #{post_id} sapien db => #{orignal_id}"
@@ -74,7 +74,7 @@ defmodule SapienNotifier.Repo.Migrations.UpdatePostUrl do
         if orignal_id == tribe_id do
           url = format_url(tribe_name)
           payload = Map.put(payload, "url", url)
-
+          Logger.info "Found Tribe N tribe_id : #{inspect tribe_id}"
           perform_update(id, payload)
         else
           Logger.warn "Invalid payload [tribe_id]: notifier db => #{tribe_id} sapien db => #{orignal_id}"
@@ -125,6 +125,7 @@ defmodule SapienNotifier.Repo.Migrations.UpdatePostUrl do
   end
 
   defp perform_update(id, payload) do
+    Logger.info "Perform update for record: #{inspect id}"
     case Repo.get!(Notification, id) do
       %Notification{} = notification ->
         notification
