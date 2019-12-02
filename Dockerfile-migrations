@@ -1,4 +1,4 @@
-FROM elixir:1.9.0
+FROM elixir:1.9.4
 
 ARG SECRET_KEY_BASE=123
 
