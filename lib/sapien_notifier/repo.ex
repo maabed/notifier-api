@@ -14,7 +14,7 @@ end
 
 defmodule SapienNotifier.SapienRepo do
   use Ecto.Repo,
-    otp_app: :talk,
+    otp_app: :sapien_notifier,
     adapter: Ecto.Adapters.Postgres,
     read_only: true
 
