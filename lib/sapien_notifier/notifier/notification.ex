@@ -33,7 +33,7 @@ defmodule SapienNotifier.Notifier.Notification do
   def changeset(%Notification{} = notification, attrs) do
     notification
     |> cast(attrs, [:sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload])
-    |> validate_required([:sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload])
+    |> validate_required([:sender_id, :sender_name, :sender_thumb, :sender_profile_id, :payload])
   end
 
   def update_inserted_at_changeset(notification, attrs \\ %{}) do
