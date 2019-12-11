@@ -4,6 +4,11 @@ defmodule SapienNotifier.Application do
   @moduledoc false
 
   use Application
+  require Logger
+  # import Ecto.Query, warn: false
+  # alias SapienNotifier.{Repo, SapienRepo}
+  # alias SapienNotifier.Notifier.{Notification, Receiver}
+  alias SapienNotifier.ReleaseTasks
 
   def start(_type, _args) do
     import Supervisor.Spec
@@ -22,7 +27,19 @@ defmodule SapienNotifier.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: SapienNotifier.Supervisor]
-    Supervisor.start_link(children, opts)
+    # Supervisor.start_link(children, opts)
+
+    case Supervisor.start_link(children, opts) do
+      {:ok, top_sup} ->
+        # Verify the latest schema migration after starting the database worker
+        #
+        # Consider doing this in a process that runs after the Repo
+        # comes up, but before anything else is done
+        :ok = ReleaseTasks.sapien_db_migration()
+        {:ok, top_sup}
+      error ->
+        error
+    end
   end
 
   # Tell Phoenix to update the endpoint configuration
