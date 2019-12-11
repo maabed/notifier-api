@@ -23,16 +23,20 @@ config :absinthe,
 config :sapien_notifier, SapienNotifier.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
-  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "18"),
+  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "20"),
+  priv: "priv/repo",
   ssl: false,
-  log_level: :info,
+  log: :info,
   show_sensitive_data_on_connection_error: true
 
 config :sapien_notifier, SapienNotifier.SapienRepo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("SAPIEN_DATABASE_URL"),
-  pool_size: String.to_integer(System.get_env("SAPIEN_POOL_SIZE") || "10"),
+  pool_size: String.to_integer(System.get_env("SAPIEN_POOL_SIZE") || "20"),
+  migration_source: "notifier_migration",
+  priv: "priv/sapien_repo",
   ssl: false,
+  log: :info,
   timeout: 90_000,
   show_sensitive_data_on_connection_error: true
 

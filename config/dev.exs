@@ -29,8 +29,9 @@ config :sapien_notifier, SapienNotifier.Repo,
   password: "postgres",
   database: "sapien_notifier_dev",
   hostname: System.get_env("PG_HOST") || "localhost",
-  pool_size: 40,
-  log_level: :info,
+  priv: "priv/repo",
+  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "20"),
+  log: :info,
   show_sensitive_data_on_connection_error: true
 
 # sapien database
@@ -39,7 +40,9 @@ config :sapien_notifier, SapienNotifier.SapienRepo,
   password: "sapien",
   database: "sapien",
   hostname: "localhost",
-  pool_size: 5,
+  migration_source: "notifier_migrations",
+  priv: "priv/sapien_repo",
+  pool_size: String.to_integer(System.get_env("SAPIEN_POOL_SIZE") || "20"),
   timeout: 90_000,
-  log_level: :info,
+  log: :info,
   show_sensitive_data_on_connection_error: true
