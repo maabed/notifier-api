@@ -1,7 +1,7 @@
 defmodule SapienNotifier.MixProject do
   use Mix.Project
 
-  @elixir_version "~> 1.8"
+  @elixir_version "~> 1.9.4"
 
   def project do
     [
@@ -13,6 +13,7 @@ defmodule SapienNotifier.MixProject do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
+      releases: releases(),
       deps: deps()
     ]
   end
@@ -46,6 +47,7 @@ defmodule SapienNotifier.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
+      {:csv, "~> 2.3"},
       {:plug_cowboy, "~> 2.0"},
       {:absinthe_ecto, ">= 0.0.0"},
       {:guardian, "~> 1.1.1", git: "https://github.com/ueberauth/guardian.git"},
@@ -66,9 +68,18 @@ defmodule SapienNotifier.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop --force", "ecto.setup"],
+      "ecto.setup": ["ecto.create","ecto.migrate -r SapienNotifier.Repo","run priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop -r SapienNotifier.Repo", "ecto.setup"],
+      "ecto.migrate.sapien": ["ecto.migrate -r SapienNotifier.SapienRepo --pool-size 30 --log-sql"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
+    ]
+  end
+
+  defp releases() do
+    [
+      sapien_notifier: [
+        include_executables_for: [:unix]
+      ]
     ]
   end
 end

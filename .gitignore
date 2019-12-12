@@ -41,3 +41,8 @@ sapien_notifier-*.tar
 
 .vscode/
 .idea/
+
+.keep.md
+
+priv/db_csv/notifications.csv
+priv/db_csv/receivers.csv
