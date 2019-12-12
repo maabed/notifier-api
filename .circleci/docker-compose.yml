@@ -40,7 +40,7 @@ services:
     image: postgres:10.5-alpine
     container_name: local-notifier-db
     ports:
-    - "5433:5433"
+    - "5433:5432"
     networks:
       sapien-local:
         ipv4_address: 172.24.0.7
