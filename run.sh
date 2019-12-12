@@ -19,6 +19,8 @@ echo "\nPostgres is available: continuing with database setup..."
 mix ecto.create
 mix ecto.migrate -r SapienNotifier.Repo --to 20190710225058
 
+sleep 5
+
 # echo "\nTesting the installation..."
 # "Proove" that install was successful by running the tests
 # mix test
