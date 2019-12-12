@@ -9,7 +9,7 @@ services:
     environment:
       - PORT=$PORT_VALUE
       - HOST=$HOST_VALUE
-      - DATABASE_URL=postgres://postgres:postgres@notifier-db:5432/postgres
+      - DATABASE_URL=postgres://postgres:postgres@notifier-db:5433/postgres
       - GUARDIAN_SECRET_KEY=$GUARDIAN_SECRET_KEY_VALUE
       - SECRET_KEY_BASE=$SECRET_KEY_BASE_VALUE
       - JWT_PUBLIC_KEY=$JWT_PUBLIC_KEY_VALUE
@@ -40,7 +40,7 @@ services:
     image: postgres:10.5-alpine
     container_name: local-notifier-db
     ports:
-    - "5432:5432"
+    - "5433:5433"
     networks:
       sapien-local:
         ipv4_address: 172.24.0.7
