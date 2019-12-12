@@ -9,27 +9,41 @@ services:
     environment:
       - PORT=$PORT_VALUE
       - HOST=$HOST_VALUE
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - DATABASE_URL=postgres://postgres:postgres@notifier-db:5432/postgres
       - GUARDIAN_SECRET_KEY=$GUARDIAN_SECRET_KEY_VALUE
       - SECRET_KEY_BASE=$SECRET_KEY_BASE_VALUE
       - JWT_PUBLIC_KEY=$JWT_PUBLIC_KEY_VALUE
-      - PG_HOST=db
+      - PG_HOST=notifier-db
       - PG_DATABASE=postgres
       - PG_USER=postgres
       - PGPASSWORD=postgres
+      - SAPIEN_DATABASE_URL=postgres://postgres:postgres@graphql-db:5432/sapien
+      - SAPIEN_POOL_SIZE=10
+      - POOL_SIZE=18
     networks:
       sapien-local:
         ipv4_address: 172.24.0.5
     depends_on:
-      - "db"
-  db:
+      - "graphql-db"
+      - "notifier-db"
+  graphql-db:
     image: postgres:10.5-alpine
-    container_name: local-postgres
+    container_name: local-graphql-db
     ports:
     - "5432:5432"
+    environment:
+      POSTGRES_DB: sapien
     networks:
       sapien-local:
         ipv4_address: 172.24.0.6
+  notifier-db:
+    image: postgres:10.5-alpine
+    container_name: local-notifier-db
+    ports:
+    - "5433:5432"
+    networks:
+      sapien-local:
+        ipv4_address: 172.24.0.7
 
 networks:
   sapien-local:
