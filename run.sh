@@ -16,8 +16,8 @@ done
 echo "\nPostgres is available: continuing with database setup..."
 
 # Potentially Set up the database
-# mix ecto.create
-# mix ecto.migrate
+mix ecto.create
+mix ecto.migrate -r SapienNotifier.Repo --to 20190710225058
 
 # echo "\nTesting the installation..."
 # "Proove" that install was successful by running the tests
