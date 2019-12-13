@@ -1,0 +1,41 @@
+version: '3.5'
+services:
+
+  notifier:
+    image: sapien-notifier
+    container_name: local-notifier
+    ports:
+    - "80:80"
+    env_file: .env
+    networks:
+      sapien-local:
+        ipv4_address: 172.26.0.5
+    depends_on:
+      - "graphql-db"
+      - "notifier-db"
+  graphql-db:
+    image: postgres:10.5-alpine
+    container_name: local-graphql-db
+    ports:
+    - "5432:5432"
+    environment:
+      POSTGRES_DB: sapien
+    networks:
+      sapien-local:
+        ipv4_address: 172.26.0.6
+  notifier-db:
+    image: postgres:10.5-alpine
+    container_name: local-notifier-db
+    ports:
+    - "5433:5432"
+    networks:
+      sapien-local:
+        ipv4_address: 172.26.0.7
+
+networks:
+  sapien-local:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.26.0.0/16
