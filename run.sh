@@ -4,9 +4,6 @@
 
 set -e
 
-# Ensure the app's dependencies are installed
-#mix deps.get
-
 # Wait for Postgres to become available.
 until psql -h $PG_HOST -p "5432" -d $PG_DATABASE -U $PG_USER -w -c '\q' 2>/dev/null; do
   >&2 echo "Postgres is unavailable - sleeping"
@@ -18,8 +15,6 @@ echo "\nPostgres is available: continuing with database setup..."
 # Potentially Set up the database
 mix ecto.create
 mix ecto.migrate -r SapienNotifier.Repo --to 20190710225058
-
-sleep 5
 
 # echo "\nTesting the installation..."
 # "Proove" that install was successful by running the tests
