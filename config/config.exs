@@ -32,6 +32,8 @@ config :sapien_notifier, SapienNotifierWeb.Guardian,
   # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :tzdata, :autoupdate, :disabled
+
 # Configure migrations to use UUIDs
 config :sapien_notifier, :generators,
   migration: true,
