@@ -25,7 +25,7 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
     columns = [:id, :sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload, :inserted_at, :updated_at]
     query =
     """
-      COPY (SELECT
+      \COPY (SELECT
         id,
         sender_id,
         sender_name,
@@ -51,7 +51,7 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
     path = get_path("receivers")
     columns = [:id, :user_id, :read, :status, :notification_id, :inserted_at, :updated_at]
     query =  """
-      COPY (SELECT
+      \COPY (SELECT
         id,
         user_id,
         CASE WHEN read = TRUE THEN 'TRUE' ELSE 'FALSE' END AS read,
@@ -158,12 +158,17 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
   end
 
   def get_path(table) do
-    Path.relative_to(
-      Path.join(
-        Application.app_dir(:sapien_notifier, "priv/db_csv"),
-        "#{table}.csv"),
-        "/"
-      )
+    path = Path.join(Application.app_dir(:sapien_notifier, "priv/db_csv"), "#{table}.csv")
+
+    case File.read(path) do
+      {:ok, _} ->
+        Logger.warn("first")
+        path
+      {:error, _reason} ->
+        :code.priv_dir(:sapien_notifier)
+        |> Path.join("db_csv/#{table}.csv")
+        |> String.replace_leading("/", "")
+    end
   end
 
   defp uuid_to_bin(uuid) do
