@@ -67,6 +67,8 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
   end
 
   defp build_and_export(path, table, columns, query) do
+    Logger.warn("csv path: #{inspect path}")
+
     started = System.monotonic_time()
     Repo.transaction fn ->
       SQL.stream(Repo, query)
