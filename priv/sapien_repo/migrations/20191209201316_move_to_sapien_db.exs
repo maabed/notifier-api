@@ -158,13 +158,12 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
   end
 
   def get_path(table) do
-    app = Keyword.get(SapienRepo.config, :otp_app)
-
-    repo_underscore = SapienRepo |> Module.split() |> List.last() |> Macro.underscore()
-
-    priv_dir = "#{:code.priv_dir(app)}"
-
-    Path.join([priv_dir, repo_underscore, "#{table}.csv"])
+    Path.relative_to(
+      Path.join(
+        Application.app_dir(:sapien_notifier, "priv/db_csv"),
+        "#{table}.csv"),
+        "/"
+      )
   end
 
   defp uuid_to_bin(uuid) do
