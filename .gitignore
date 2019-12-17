@@ -35,6 +35,7 @@ sapien_notifier-*.tar
 # variables.
 /config/*.secret.exs
 .env
+docker.env
 
 # docker postgres data
 /pgdata/
