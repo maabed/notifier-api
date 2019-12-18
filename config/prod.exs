@@ -4,6 +4,7 @@ import Config
 config :sapien_notifier, SapienNotifierWeb.Endpoint,
   http: [port: System.get_env("PORT")],
   url: [host: System.get_env("HOST")],
+  server: true,
   secret_key_base: System.get_env("SECRET_KEY_BASE"),
   code_reloader: false
 
