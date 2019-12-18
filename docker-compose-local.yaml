@@ -5,7 +5,7 @@ services:
     image: sapien-notifier
     container_name: local-notifier
     ports:
-    - "80:80"
+      - "80:9000"
     env_file: .env
     networks:
       sapien-local:
