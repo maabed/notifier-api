@@ -15,7 +15,7 @@ defmodule SapienNotifierWeb.Endpoint do
     at: "/",
     from: :sapien_notifier,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(css fonts images js robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

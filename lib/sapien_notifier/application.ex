@@ -4,10 +4,7 @@ defmodule SapienNotifier.Application do
   @moduledoc false
 
   use Application
-  require Logger
-  # import Ecto.Query, warn: false
-  # alias SapienNotifier.{Repo, SapienRepo}
-  # alias SapienNotifier.Notifier.{Notification, Receiver}
+
   alias SapienNotifier.ReleaseTasks
 
   def start(_type, _args) do

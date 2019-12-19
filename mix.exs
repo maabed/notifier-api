@@ -52,7 +52,6 @@ defmodule SapienNotifier.MixProject do
       {:absinthe_ecto, ">= 0.0.0"},
       {:guardian, "~> 1.1.1", git: "https://github.com/ueberauth/guardian.git"},
       {:poison, "~> 3.1"},
-      {:faker, "~> 0.11.2", only: [:dev, :test]},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:timex, "~> 3.1"},
       {:tzdata, "~> 1.0.0", override: true},

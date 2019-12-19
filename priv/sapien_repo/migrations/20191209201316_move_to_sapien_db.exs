@@ -10,9 +10,13 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
   @chunk_size 10_000
 
   def change do
-    Repo.start_link()
-    SapienRepo.start_link()
-    migrate()
+    # old migration process using pg copy, the new version available on ReleaseTasks
+    # but we still need this file to put update migrations version on notifier_migrations
+    # table on sapien db, so it didn't call on app restart.
+    Logger.warn("20191209201316 migration done")
+    # Repo.start_link()
+    # SapienRepo.start_link()
+    # migrate()
   end
 
   defp migrate do
@@ -21,7 +25,6 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
   end
 
   defp migrate_notifications do
-    path = get_path("notifications")
     columns = [:id, :sender_id, :sender_name, :sender_thumb, :sender_profile_id, :source, :payload, :inserted_at, :updated_at]
     query =
     """
@@ -41,17 +44,15 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
         inserted_at,
         updated_at
       FROM notifications)
-      TO '#{path}' WITH (FORMAT CSV, HEADER TRUE, DELIMITER '|', NULL '', quote E'\x01')
+      TO '#{System.tmp_dir!() |> Path.join("notifications.csv")}' WITH (FORMAT CSV, HEADER TRUE, DELIMITER '|', NULL '', quote E'\x01')
     """
-
-    build_and_export(path, "notifications", columns, query)
+    build_and_export("notifications", columns, query)
   end
 
   defp migrate_receivers do
-    path = get_path("receivers")
     columns = [:id, :user_id, :read, :status, :notification_id, :inserted_at, :updated_at]
     query =  """
-      COPY (SELECT
+    COPY (SELECT
         id,
         user_id,
         CASE WHEN read = TRUE THEN 'TRUE' ELSE 'FALSE' END AS read,
@@ -59,24 +60,29 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
         notification_id,
         inserted_at,
         updated_at
-       FROM receivers)
-      TO '#{path}' WITH (FORMAT CSV, HEADER TRUE, DELIMITER '|', NULL '', quote E'\x01')
+      FROM receivers)
+      TO '#{System.tmp_dir!() |> Path.join("receivers.csv")}' WITH (FORMAT CSV, HEADER TRUE, DELIMITER '|', NULL '', quote E'\x01')
     """
 
-    build_and_export(path, "receivers", columns, query)
+    build_and_export("receivers", columns, query)
   end
 
-  defp build_and_export(path, table, columns, query) do
+  defp build_and_export(table, columns, query) do
+    Logger.warn("Repo.config => #{inspect Repo.config}")
+
+    path = System.tmp_dir!() |> Path.join("#{table}.csv")
+    Logger.warn("export #{table} csv file to => #{path}")
     started = System.monotonic_time()
-    Repo.transaction fn ->
+
+    Repo.transaction( fn ->
       SQL.stream(Repo, query)
       |> Stream.drop(1)
-      |> Stream.map(fn row ->
-        Enum.map(columns, &Map.get(&1, row))
-      end)
+      |> Stream.map(fn row -> Enum.map(columns, &Map.get(&1, row)) end)
       |> CSV.encode(separator: ?|, headers: columns)
       |> Enum.into(File.stream!(path, [:write, :utf8]))
-    end
+      end,
+     timeout: :infinity, log: true
+    )
 
     ended = System.monotonic_time()
     time = System.convert_time_unit(ended - started, :native, :millisecond)
@@ -89,6 +95,7 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
   defp transfer(path, table) do
     Logger.debug "Start importing"
     started = System.monotonic_time()
+    Logger.warn("SapienRepo.config => #{inspect SapienRepo.config}")
 
     path
     |> File.stream!()
@@ -155,8 +162,16 @@ defmodule SapienNotifier.SapienRepo.Migrations.MoveDataToSapienDb do
     SapienRepo.insert_all(table, rows, on_conflict: :nothing)
   end
 
-  defp get_path(table) do
-    Path.join(Application.app_dir(:sapien_notifier, "priv/db_csv"), "#{table}.csv")
+  def get_path(table) do
+    path = Path.join(Application.app_dir(:sapien_notifier, "priv/db_csv"), "#{table}.csv")
+
+    case File.read(path) do
+      {:ok, _} -> path
+      {:error, _reason} ->
+        :code.priv_dir(:sapien_notifier)
+        |> Path.join("db_csv/#{table}.csv")
+        |> String.replace_leading("/", "")
+    end
   end
 
   defp uuid_to_bin(uuid) do

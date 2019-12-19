@@ -35,6 +35,7 @@ sapien_notifier-*.tar
 # variables.
 /config/*.secret.exs
 .env
+docker.env
 
 # docker postgres data
 /pgdata/
@@ -43,6 +44,3 @@ sapien_notifier-*.tar
 .idea/
 
 .keep.md
-
-priv/db_csv/notifications.csv
-priv/db_csv/receivers.csv
