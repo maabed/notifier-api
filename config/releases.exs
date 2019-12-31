@@ -21,8 +21,8 @@ config :sapien_notifier, SapienNotifier.Repo,
   priv: "priv/repo",
   ssl: false,
   log: :info,
-  timeout: 120_000,
-  ownership_timeout: 120_000
+  timeout: 240_000,
+  ownership_timeout: 240_000
 
 config :sapien_notifier, SapienNotifier.SapienRepo,
   adapter: Ecto.Adapters.Postgres,
@@ -33,8 +33,8 @@ config :sapien_notifier, SapienNotifier.SapienRepo,
   priv: "priv/sapien_repo",
   ssl: false,
   log: :info,
-  timeout: 120_000,
-  ownership_timeout: 120_000
+  timeout: 240_000,
+  ownership_timeout: 240_000
 
 # Configures Guardian
 config :sapien_notifier, SapienNotifierWeb.Guardian,

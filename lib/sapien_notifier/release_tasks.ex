@@ -193,7 +193,7 @@ defmodule SapienNotifier.ReleaseTasks do
 
   def transfer_table(targeted_table) do
     started = System.monotonic_time()
-
+    max_concurrency = System.schedulers_online * 2
     query = "SELECT * FROM #{targeted_table}"
     results =
       Repo.transaction(fn ->
@@ -215,7 +215,7 @@ defmodule SapienNotifier.ReleaseTasks do
               _ -> Logger.warn("NOT A LIST")
           end
         end,
-        max_concurrency: 4, timeout: :infinity, log: false)
+        max_concurrency: max_concurrency, timeout: :infinity, log: false)
         |> Stream.run()
       end)
 

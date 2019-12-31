@@ -48,8 +48,8 @@ config :sapien_notifier, SapienNotifier.Repo,
   priv: "priv/repo",
   ssl: false,
   log: :info,
-  timeout: 120_000,
-  ownership_timeout: 120_000,
+  timeout: 240_000,
+  ownership_timeout: 240_000,
   show_sensitive_data_on_connection_error: true
 
 config :sapien_notifier, SapienNotifier.SapienRepo,
@@ -61,8 +61,8 @@ config :sapien_notifier, SapienNotifier.SapienRepo,
   priv: "priv/sapien_repo",
   ssl: false,
   log: :info,
-  timeout: 120_000,
-  ownership_timeout: 120_000
+  timeout: 240_000,
+  ownership_timeout: 240_000
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

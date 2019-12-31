@@ -67,7 +67,7 @@ defmodule SapienNotifier.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "ecto.setup": ["ecto.create","ecto.migrate -r SapienNotifier.Repo","run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate -r SapienNotifier.Repo", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop -r SapienNotifier.Repo", "ecto.setup"],
       "ecto.migrate.sapien": ["ecto.migrate -r SapienNotifier.SapienRepo --pool-size 30 --log-sql"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
