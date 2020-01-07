@@ -55,21 +55,21 @@ receivers {
 
 #### Docker local setup
 
+Note: Make sure your .env contents are the same as the ones from https://sapien.1password.com/vaults/ajcgx3zogtvg6xo7qkzou5jjd4/allitems/42y5t5dptknkepktfslvffv3q4
+
 Run following commands
 
-* Build docker image `docker-compose build`
-* Start notifier container `docker-compose up`
-* When run docker locally for the first time you need to setup notifier db as below:
+* Build docker image `docker build -t sapien-notifier .`
+* Start notifier container and database `docker-compose -f docker-compose-local.yaml up -d`
 
-open new terminal windows and run below:
+Debugging
 
-```bash
-docker-compose exec phoenix /bin/bash
-mix ecto.create
-mix ecto.migrate
-```
+* Check if all containers are running `docker-compose -f docker-compose-local.yaml ps`
+* Check the healthcheck endpoint `curl http://localhost/api/health`
+* Check the notifier logs  `docker logs -f local-notifier`
+* Enter the running notifier container `docker exec -it local-notifier bash`
 
-GraphiQL playground at [`localhost:9000/api/graphiql`](http://localhost:9000/api/graphiql)
+GraphiQL playground at [`localhost/api/graphiql`](http://localhost/api/graphiql)
 
 ### Production
 

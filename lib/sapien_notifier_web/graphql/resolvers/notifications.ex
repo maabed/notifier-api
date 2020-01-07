@@ -67,7 +67,7 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
   end
 
   #TODO: check that current_user is sender
-  def delete_receivers(_, %{id: id, receivers: receivers}, %{context: %{current_user: current_user}}) do
+  def delete_receivers(_, %{id: id, receivers: receivers}, %{context: %{current_user: _current_user}}) do
     with {:ok, true} <- Notifier.delete_receivers(id, receivers) do
       {:ok, true}
     end

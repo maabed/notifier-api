@@ -12,5 +12,12 @@ sapien_notifier-*.tar
 /priv/static/
 /config/*.secret.exs
 .env
+docker.env
 /pgdata/
 .circleci
+test/
+.dockerignore
+.vscode/
+.formatter.exs
+.gitignore
+README.md
