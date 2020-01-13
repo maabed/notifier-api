@@ -13,8 +13,7 @@ config :sapien_notifier, SapienNotifierWeb.Endpoint,
   pubsub: [name: SapienNotifier.PubSub, adapter: Phoenix.PubSub.PG2],
   watchers: [],
   debug_errors: true,
-  check_origin: false
-  # check_origin: ["//127.0.0.1", "//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"]
+  check_origin: ["//127.0.0.1", "//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"]
 
 # Configures Elixir's Logger
 config :logger, :console,
