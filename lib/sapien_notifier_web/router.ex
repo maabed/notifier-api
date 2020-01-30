@@ -18,5 +18,10 @@ defmodule SapienNotifierWeb.Router do
         socket: SapienNotifierWeb.UserSocket,
         interface: :playground
     end
+    match(:*, "/*path", SapienNotifierWeb.Fallback, :not_found)
+  end
+
+  scope "/" do
+    match(:*, "/*path", SapienNotifierWeb.Fallback, :not_found)
   end
 end
