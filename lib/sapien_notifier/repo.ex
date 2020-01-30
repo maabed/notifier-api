@@ -10,7 +10,8 @@ defmodule SapienNotifier.Repo do
   DATABASE_URL environment variable.
   """
   def init(_, opts) do
-    Logger.warn("opts #{inspect opts}")
+    Logger.warn("opts => telemetry_prefix #{inspect Keyword.get(opts, :telemetry_prefix)}")
+    Logger.warn("opts => migration_source #{inspect Keyword.get(opts, :migration_source)}")
     {:ok, Keyword.put(opts, :url, System.get_env("DATABASE_URL"))}
   end
 end

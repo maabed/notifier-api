@@ -13,7 +13,6 @@ defmodule SapienNotifierWeb.Context do
   defp build_context(conn) do
 
     with ["Bearer " <> token] <- get_req_header(conn, "authorization") do
-      Logger.warn "token ON build_context: #{inspect token}"
       %{current_user: token}
     else
       nil ->
