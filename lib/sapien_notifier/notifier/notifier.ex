@@ -12,6 +12,13 @@ defmodule SapienNotifier.Notifier do
   def get_notification!(id), do: Repo.get!(Notification, id)
   def get_notification_receiver!(id), do: Repo.get!(Receiver, id)
 
+  def base_query(user_id, filters) do
+    from n in Notification,
+      join: r in assoc(n, :receivers),
+      on: r.user_id == ^user_id,
+      where: fragment("payload->>'action' = ANY(?)", ^filters)
+  end
+
   def get_notification_by_id(id, user_id) do
     Repo.all from n in Notification,
       join: r in assoc(n, :receivers),
@@ -19,28 +26,26 @@ defmodule SapienNotifier.Notifier do
       preload: [receivers: r]
   end
 
-  def get_user_notifications(user_id, limit, offset) do
-    Repo.all from n in Notification,
-      join: r in assoc(n, :receivers),
-      where: r.user_id == ^user_id,
+  def get_user_notifications(user_id, limit, offset, filters) do
+    query =
+      from [n, r] in base_query(user_id, filters),
       select: %{n | read: r.read, status: r.status },
       limit: ^limit,
       offset: ^offset,
       order_by: [desc: n.inserted_at]
       # preload: [receivers: r] # use this to load all receivers data
+
+    Repo.all(query)
   end
 
-  def get_user_unread_notifications_count(user_id) do
-    Repo.one from n in Notification,
-      join: r in assoc(n, :receivers),
-      where: r.user_id == ^user_id and r.read == false,
+  def get_user_unread_notifications_count(user_id, filters) do
+    Repo.one from [n, r] in base_query(user_id, filters),
+      where: r.read == false,
       select: count(r.id)
   end
 
-  def get_user_notifications_count(user_id) do
-    Repo.one from n in Notification,
-      join: r in assoc(n, :receivers),
-      where: r.user_id == ^user_id,
+  def get_user_notifications_count(user_id, filters) do
+    Repo.one from [_n, r] in base_query(user_id, filters),
       select: count(r.id)
   end
 
@@ -55,7 +60,7 @@ defmodule SapienNotifier.Notifier do
     receivers
     |> Enum.map(&String.trim/1)
     |> Enum.reject(& &1 == "")
-    |> Enum.map(fn receiver ->
+    |> Enum.each(fn receiver ->
       params_with_relation = %{
         notification_id: notification.id,
         user_id: receiver,

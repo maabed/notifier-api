@@ -5,7 +5,7 @@ defmodule SapienNotifierWeb.Endpoint do
   socket "/socket", SapienNotifierWeb.UserSocket,
     websocket: [
       timeout: 45_000,
-      check_origin: ["//127.0.0.1", "//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"]
+      check_origin: ["//127.0.0.1", "//localhost", "//*.sapien.network"]
     ]
 
   # Code reloading can be explicitly enabled under the
