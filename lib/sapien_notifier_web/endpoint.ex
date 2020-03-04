@@ -5,17 +5,8 @@ defmodule SapienNotifierWeb.Endpoint do
   socket "/socket", SapienNotifierWeb.UserSocket,
     websocket: [
       timeout: 45_000,
-      check_origin: ["//127.0.0.1", "//localhost", "//*.sapien.network", "//sapien-notifier.herokuapp.com"]
+      check_origin: ["//127.0.0.1", "//localhost", "//*.sapien.network"]
     ]
-  # Serve at "/" the static files from "priv/static" directory.
-  #
-  # You should set gzip to true if you are running phx.digest
-  # when deploying your static files in production.
-  plug Plug.Static,
-    at: "/",
-    from: :sapien_notifier,
-    gzip: false,
-    only: ~w(css fonts images js robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -34,14 +25,6 @@ defmodule SapienNotifierWeb.Endpoint do
 
   plug Plug.MethodOverride
   plug Plug.Head
-
-  # The session will be stored in the cookie and signed,
-  # this means its contents can be read but not tampered with.
-  # Set :encryption_salt if you would also like to encrypt it.
-  plug Plug.Session,
-    store: :cookie,
-    key: "_sapien_notifier_key",
-    signing_salt: "/83W7kX3"
 
   plug SapienNotifierWeb.Router
 

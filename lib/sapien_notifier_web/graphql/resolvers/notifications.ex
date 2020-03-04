@@ -9,17 +9,17 @@ defmodule SapienNotifierWeb.Resolvers.Notifications do
     {:ok, Notifier.list_notifications()}
   end
 
-  def user_notification(_, %{user_id: user_id} = args, _) do
+  def user_notification(_, %{user_id: user_id, filters: filters} = args, _) do
     %{limit: limit, offset: offset} = Map.merge(@defaults_pagination, args)
-    {:ok, Notifier.get_user_notifications(user_id, limit, offset)}
+    {:ok, Notifier.get_user_notifications(user_id, limit, offset, filters)}
   end
 
-  def user_unread_notification_count(_, %{user_id: user_id}, _) do
-    {:ok, Notifier.get_user_unread_notifications_count(user_id)}
+  def user_unread_notification_count(_, %{user_id: user_id, filters: filters}, _) do
+    {:ok, Notifier.get_user_unread_notifications_count(user_id, filters)}
   end
 
-  def user_notification_count(_, %{user_id: user_id}, _) do
-    {:ok, Notifier.get_user_notifications_count(user_id)}
+  def user_notification_count(_, %{user_id: user_id, filters: filters}, _) do
+    {:ok, Notifier.get_user_notifications_count(user_id, filters)}
   end
 
   def notification(_, %{id: id}, _) do

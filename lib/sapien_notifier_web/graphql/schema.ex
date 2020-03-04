@@ -28,18 +28,21 @@ defmodule SapienNotifierWeb.Schema do
       arg :user_id, non_null(:id)
       arg :limit, :integer
       arg :offset, :integer
+      arg :filters, list_of(:string)
       resolve &Resolvers.Notifications.user_notification/3
     end
 
     @desc "Get user notifications count"
     field :user_notification_count, non_null(:integer) do
       arg :user_id, non_null(:id)
+      arg :filters, list_of(:string)
       resolve &Resolvers.Notifications.user_notification_count/3
     end
 
     @desc "Get user notifications count"
     field :user_unread_notification_count, non_null(:integer) do
       arg :user_id, non_null(:id)
+      arg :filters, list_of(:string)
       resolve &Resolvers.Notifications.user_unread_notification_count/3
     end
 
