@@ -1,4 +1,4 @@
-defmodule SapienNotifier.SapienRepo.Migrations.PayloadIndexes do
+defmodule SapienNotifier.Repo.Migrations.PayloadIndexes do
   @doc false
   use Ecto.Migration
 

@@ -20,13 +20,5 @@ config :sapien_notifier, SapienNotifier.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "sapien_notifier_dev",
-  hostname: System.get_env("PG_HOST") || "localhost"
-
-# sapien database
-config :sapien_notifier, SapienNotifier.SapienRepo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "sapien",
-  password: "sapien",
   database: "sapien",
-  hostname: "localhost"
+  hostname: System.get_env("PG_HOST") || "localhost"
