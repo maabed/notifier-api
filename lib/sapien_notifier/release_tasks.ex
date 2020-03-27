@@ -1,9 +1,7 @@
 defmodule SapienNotifier.ReleaseTasks do
   require Logger
   import Ecto.Query, warn: false
-  alias SapienNotifier.{Repo, SapienRepo}
-  alias SapienNotifier.Notifier.{Notification, Receiver}
-  alias Ecto.Adapters.SQL
+  alias SapienNotifier.Repo
   use Ecto.Migration
 
   @repo_apps [
@@ -76,19 +74,6 @@ defmodule SapienNotifier.ReleaseTasks do
     end)
   end
 
-  def start_sapien_repo() do
-    IO.puts("Starting dependencies...")
-    Enum.each(@repo_apps, fn app ->
-      {:ok, _} = Application.ensure_all_started(app)
-    end)
-
-    IO.puts("Starting repos...")
-    Application.load(:sapien_notifier)
-
-    SapienRepo.start_link(pool_size: 20)
-    Repo.start_link(pool_size: 20)
-  end
-
   defp stop() do
     IO.puts("Stopping...")
     :init.stop()
@@ -150,89 +135,8 @@ defmodule SapienNotifier.ReleaseTasks do
     Path.join([priv_dir, "repo", filename])
   end
 
-  def sapien_db_migration() do
-    start_sapien_repo()
-
-    case migration_status() do
-      :ok ->
-        {:ok, pid} = point_and_restart_repo()
-        Logger.info("Repo pid: #{inspect pid}")
-        Logger.warn("Database schema is up-to-date")
-        :ok
-      {:error, _, _} ->
-        Logger.info "Stars Sapien DB migration ......"
-
-        # count notifications, receiver records on notifier db
-        check_data(Repo, "[Notifier db] before migration")
-
-        # run the sapien_repo migration
-        Logger.info("Transfering data .....")
-        run_sapien_migrate()
-        check_data(SapienRepo, "[Sapien db] after migration")
-        # Point Repo to sapien_db so new records goes to sapien db this done by retrieves the runtime repo configs and pass it to init as :supervisor context
-        {:ok, pid} = point_and_restart_repo()
-        Logger.info("Repo pid: #{inspect pid}")
-        # confirm notifications, receiver records count on sapien db
-        check_data(Repo, "[Sapien db] after point and restart repo")
-    end
-  end
-
-  defp run_sapien_migrate() do
-    path = Application.app_dir(:sapien_notifier, "priv/sapien_repo/migrations")
-    Logger.info("Migration path: #{inspect path}")
-    versions = Ecto.Migrator.run(SapienRepo, path, :up, all: true)
-    :timer.sleep(1000)
-    transfer_table("notifications")
-    :timer.sleep(1000)
-    transfer_table("receivers")
-    :timer.sleep(1000)
-    Logger.info("Migration versions: #{inspect versions}")
-    :timer.sleep(1000)
-    :ok
-  end
-
-  def transfer_table(targeted_table) do
-    started = System.monotonic_time()
-    max_concurrency = System.schedulers_online * 2
-    query = "SELECT * FROM #{targeted_table}"
-    results =
-      Repo.transaction(fn ->
-        SQL.stream(Repo, query)
-        |> Stream.map(fn %Postgrex.Result{columns: columns, rows: rows} ->
-          rows
-          |> Enum.map(fn row ->
-            columns
-            |> Enum.zip(row)
-            |> Enum.into(%{})
-          end)
-        end)
-        |> Task.async_stream(fn rows ->
-          case rows do
-            rows when is_list(rows) ->
-              {count, _} = insert_all_rows(targeted_table, rows)
-              Logger.warn("Insterted count: #{inspect count}")
-              {:ok, count}
-              _ -> Logger.warn("NOT A LIST")
-          end
-        end,
-        max_concurrency: max_concurrency, timeout: :infinity, log: false)
-        |> Stream.run()
-      end)
-
-    Logger.info("Transfer Stream results: #{inspect results}")
-    ended = System.monotonic_time()
-    time = System.convert_time_unit(ended - started, :native, :millisecond)
-    Logger.info "#{targeted_table} transferred in #{time} millisecond(s)"
-    results
-  end
-
-
-  defp insert_all_rows(table, rows) do
-    SapienRepo.insert_all(table, rows, on_conflict: :nothing, log: false)
-  end
-
   def migration_status() do
-    latest_migration = Application.app_dir(:sapien_notifier, "priv/sapien_repo/migrations")
+    latest_migration = Application.app_dir(:sapien_notifier, "priv/repo/migrations")
     |> File.ls!
     |> Enum.max
     |> String.split("_", parts: 2)
@@ -242,40 +146,13 @@ defmodule SapienNotifier.ReleaseTasks do
     Logger.info("latest_migration #{inspect latest_migration}")
 
     # Perform similar logic to see what's latest in the database
-    latest_applied_migration = Enum.max(Ecto.Migrator.migrated_versions(SapienRepo), fn -> :not_found end)
+    latest_applied_migration = Enum.max(Ecto.Migrator.migrated_versions(Repo), fn -> :not_found end)
     Logger.info("latest_applied_migration #{inspect latest_applied_migration}")
-
 
     if latest_applied_migration == latest_migration do
       :ok
     else
       {:error, latest_applied_migration, latest_migration}
     end
-  end
-
-  def point_and_restart_repo() do
-    sapien_db_url = System.get_env("SAPIEN_DATABASE_URL")
-    # switch DATABASE_URL <== SAPIEN_DATABASE_URL
-    System.put_env("DATABASE_URL", sapien_db_url)
-
-    opts = Repo.config
-    Supervisor.stop(Repo, :normal)
-    :timer.sleep(1000)
-    Repo.init(:supervisor, opts)
-
-    case Repo.start_link(opts) do
-      {:ok, pid} -> {:ok, pid}
-      {:error, {:already_started, pid}} -> {:ok, pid}
-      error ->
-        Logger.warn("Error on start_link: #{inspect error}")
-        error
-    end
-  end
-
-  def check_data(repo, stage) do
-    notifications = repo.one(from n in Notification, select: count(n.id))
-    receivers = repo.one(from r in Receiver, select: count(r.id))
-    Logger.info("Counts #{stage}: [Notifications: #{inspect notifications} Receivers: #{inspect receivers}]")
-    :ok
   end
 end
