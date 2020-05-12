@@ -8,7 +8,7 @@ do
 done
 
 echo "Postgres is available: Running Notifir db migrations..."
-/opt/notifier/bin/sapien_notifier eval 'SapienNotifier.ReleaseTasks.migrate(["--to", 20191029183513])'
+/opt/notifier/bin/sapien_notifier eval 'SapienNotifier.ReleaseTasks.migrate()'
 
 if [[ "$SEED_DATA" == 1 ]]; then
 	echo "Seeding..."

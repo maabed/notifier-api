@@ -3,7 +3,6 @@ defmodule SapienNotifier.Notifier.Receiver do
   import Ecto.Changeset
   alias SapienNotifier.Notifier.Notification
 
-
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
